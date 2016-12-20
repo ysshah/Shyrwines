@@ -32,6 +32,8 @@ class Command(BaseCommand):
         df['Count'] = df['Count'].fillna(1).astype(int)
 
         df = df.where((pd.notnull(df)), None)
+
+        changed = False
         for i, r in df.iterrows():
             new = {
                 'name': r.Name,
@@ -69,7 +71,12 @@ class Command(BaseCommand):
                         print('    Change {}{}{}\n        {}{}{}\n        {}{}{}'.format(
                             BLUE, k, RESET_ALL, RED, old[k], RESET_ALL, GREEN, new[k], RESET_ALL))
                     wine.update(**{k: new[k] for k in diffKeys})
+                    changed = True
             else:
                 new['sku'] = r.SKU
-                Wine(**new).save()
                 print('New SKU {}: {}'.format(new['sku'], new['name']))
+                Wine(**new).save()
+                changed = True
+
+        if not changed:
+            print('No differences.')
