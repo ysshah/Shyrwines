@@ -234,8 +234,8 @@ def checkout(request):
         sent = send_mail(
             subject='Order Inquiry from ' + request.GET['name'],
             message=msg_text,
-            from_email=request.GET['email'],
-            recipient_list=['yash@shyrwines.com'],
+            from_email='info@shyrwines.com',
+            recipient_list=['sanjay@shyrwines.com'],
             html_message=msg_html
         )
         if sent:
