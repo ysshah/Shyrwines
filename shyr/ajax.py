@@ -4,8 +4,9 @@ from django.http import HttpResponse, Http404
 from django.contrib.staticfiles import finders
 from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
-from django.core.mail import send_mail
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 from .models import Wine
 
 raters = (
@@ -173,7 +174,6 @@ def getAllWinesContext(request):
 def add(request):
     if request.is_ajax() and request.POST:
         if 'cart' in request.session:
-            print(request.session['cart'])
             request.session['cart'][request.POST['id']] = request.session['cart'].get(
                 request.POST['id'], 0) + int(request.POST['quantity'])
             request.session.modified = True
@@ -187,8 +187,8 @@ def add(request):
 
 
 def autocomplete(request):
-    if request.is_ajax() and request.POST:
-        query = request.POST['q'].lower()
+    if request.is_ajax():
+        query = request.GET['q'].lower()
         wines = Wine.objects.filter(name__contains=query)
         for wine in wines:
             i = wine.name.lower().index(query)
@@ -199,8 +199,6 @@ def autocomplete(request):
         matched_fields = []
         for field in filter_fields:
             for match in Wine.objects.values(field).distinct().filter(**{field+'__contains':query}):
-                print(match[field])
-                print(query)
                 i = match[field].lower().index(query)
                 match['fieldname'] = match[field]
                 match['before'] = match[field][:i]
@@ -220,9 +218,32 @@ def autocomplete(request):
 
 def checkout(request):
     if request.is_ajax() and request.POST:
-        send_mail('Order Inquiry from ' + request.POST['name'],
-            'Hello', request.POST['email'], ['yash@shyrwines.com'])
-        return HttpResponse('1', content_type='application/json')
+        context = getCartContext(request)
+        context['name'] = request.POST['name']
+        context['email'] = request.POST['email']
+        context['phone'] = request.POST['phone']
+        context['address'] = request.POST['address']
+        context['city'] = request.POST['city']
+        context['state'] = request.POST['state']
+        context['zipcode'] = request.POST['zipcode']
+        context['comment'] = request.POST['comment']
+
+        msg_text = render_to_string('email.txt', context)
+        msg_html = render_to_string('email.html', context)
+
+        sent = send_mail(
+            subject='Order Inquiry from ' + request.POST['name'],
+            message=msg_text,
+            from_email=request.POST['email'],
+            recipient_list=['yash@shyrwines.com'],
+            html_message=msg_html
+        )
+        if sent:
+            request.session.pop('cart')
+            return HttpResponse('0', content_type='application/json')
+        else:
+            return HttpResponse('Error sending email.',
+                content_type='application/json')
     else:
         raise Http404
 
@@ -252,7 +273,6 @@ def remove(request):
 def filter(request):
     if request.is_ajax() and request.POST:
         params = request.POST.copy()
-        print(params)
         popList = [key for key in params if 'Any' in params[key]] + ['csrfmiddlewaretoken']
         for key in popList:
             params.pop(key)

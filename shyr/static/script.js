@@ -5,7 +5,7 @@ $(document).ready(function () {
         if ($("#nav-search").val()) {
             $.ajax({
                 url: "/autocomplete/",
-                type: "POST",
+                type: "GET",
                 data: $("form.search").serialize(),
                 success: function (data) {
                     if (data) {
@@ -207,19 +207,18 @@ $(document).ready(function () {
     /* Validate order form upon "Submit Order" button click. */
     $("button#submit-order").click(function () {
         if (validate()) {
-            alert('Automatic checkout is under construction. Should be available in 1-2 days. Instead, please send an email to sanjay@shyrwines.com for all order inquiries.');
-            //$.post('/checkout/', $("#order-form").serialize(), function(msg) {
-            //    if (msg) {
-            //        alert(msg);
-            //    } else {
-            //        $("div#cart-content").slideUp();
-            //        $("form#order-form").slideUp(function () {
-            //            $("div#dimmer").fadeIn(function () {
-            //                $("div#thanks-wrapper").fadeIn();
-            //            });
-            //        });
-            //    }
-            //});
+            $.post('/checkout/', $("#order-form").serialize(), function(msg) {
+                if (msg) {
+                    alert(msg);
+                } else {
+                    $("div#cart-content").slideUp();
+                    $("form#order-form").slideUp(function () {
+                        $("div#dimmer").fadeIn(function () {
+                            $("div#thanks-wrapper").fadeIn();
+                        });
+                    });
+                }
+            });
         }
     });
 

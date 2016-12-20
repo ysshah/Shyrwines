@@ -1,0 +1,13 @@
+Name: {{ name }}
+Email: {{ email }}
+Address: {{ address }}, {{ city }}, {{ state }} {{ zipcode }}
+
+{% for wine in cart %}
+{{ wine.name }}: {{ wine.quantity }} x {{ wine.price }} = {{ wine.total_price }}
+{% endfor %}
+
+Subtotal = {{ subtotal }}
+Tax = {{ tax }}
+Total = {{ total }}
+
+Comment: {{ comment }}

@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.staticfiles import finders
-from .models import Wine
 from .ajax import getCartContext, getAllWinesContext
+from .models import Wine
 
 raters = (
     ('JH', 'James Halliday'),

@@ -39,7 +39,7 @@
                     </div>
                 </div>
             </div>
-            <form class="search" method="get" action="{% url 'all-wines' %}">{% csrf_token %}
+            <form class="search" method="get" action="{% url 'all-wines' %}">
                 <input autocomplete="off" name="q" id="nav-search" type="text" placeholder="Search by wine name, keyword..." value='{{ query|default_if_none:"" }}' />
                 <div id="mag-circle"></div>
                 <div id="mag-handle"></div>

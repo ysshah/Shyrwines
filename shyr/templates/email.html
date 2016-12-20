@@ -1,0 +1,33 @@
+Name: {{ name }}<br>
+Email: {{ email }}<br>
+Address: {{ address }}, {{ city }}, {{ state }} {{ zipcode }}<br><br>
+
+<table>
+    {% for wine in cart %}
+    <tr>
+        <td style='padding-right:10px;'>{{ wine.name }}</td>
+        <td style='padding-right:10px;'>{{ wine.quantity }}</td>
+        <td style='padding-right:10px;'>x</td>
+        <td style='padding-right:10px;'>{{ wine.price }}</td>
+        <td style='padding-right:10px;'>=</td>
+        <td style='text-align:right;'>{{ wine.total_price }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td style='colspan="4"; padding-right:10px; text-align:right;'>Subtotal</td>
+        <td style='padding-right:10px;'>=</td>
+        <td style='text-align:right;'>{{ subtotal }}</td>
+    </tr>
+    <tr>
+        <td style='colspan="4"; padding-right:10px; text-align:right;'>Tax</td>
+        <td style='padding-right:10px;'>=</td>
+        <td style='text-align:right;'>{{ tax }}</td>
+    </tr>
+    <tr>
+        <td style='colspan="4"; padding-right:10px; text-align:right;'>Total</td>
+        <td style='padding-right:10px;'>=</td>
+        <td style='text-align:right;'>{{ total }}</td>
+    </tr>
+</table>
+<br>
+Comment: {{ comment }}
