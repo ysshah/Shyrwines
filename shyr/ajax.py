@@ -187,7 +187,7 @@ def add(request):
 
 
 def autocomplete(request):
-    if request.is_ajax():
+    if request.is_ajax() and request.GET:
         query = request.GET['q'].lower()
         wines = Wine.objects.filter(name__contains=query)
         for wine in wines:
@@ -217,24 +217,24 @@ def autocomplete(request):
 
 
 def checkout(request):
-    if request.is_ajax() and request.POST:
+    if request.is_ajax() and request.GET:
         context = getCartContext(request)
-        context['name'] = request.POST['name']
-        context['email'] = request.POST['email']
-        context['phone'] = request.POST['phone']
-        context['address'] = request.POST['address']
-        context['city'] = request.POST['city']
-        context['state'] = request.POST['state']
-        context['zipcode'] = request.POST['zipcode']
-        context['comment'] = request.POST['comment']
+        context['name'] = request.GET['name']
+        context['email'] = request.GET['email']
+        context['phone'] = request.GET['phone']
+        context['address'] = request.GET['address']
+        context['city'] = request.GET['city']
+        context['state'] = request.GET['state']
+        context['zipcode'] = request.GET['zipcode']
+        context['comment'] = request.GET['comment']
 
         msg_text = render_to_string('email.txt', context)
         msg_html = render_to_string('email.html', context)
 
         sent = send_mail(
-            subject='Order Inquiry from ' + request.POST['name'],
+            subject='Order Inquiry from ' + request.GET['name'],
             message=msg_text,
-            from_email=request.POST['email'],
+            from_email=request.GET['email'],
             recipient_list=['yash@shyrwines.com'],
             html_message=msg_html
         )

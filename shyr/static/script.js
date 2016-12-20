@@ -207,16 +207,21 @@ $(document).ready(function () {
     /* Validate order form upon "Submit Order" button click. */
     $("button#submit-order").click(function () {
         if (validate()) {
-            $.post('/checkout/', $("#order-form").serialize(), function(msg) {
-                if (msg) {
-                    alert(msg);
-                } else {
-                    $("div#cart-content").slideUp();
-                    $("form#order-form").slideUp(function () {
-                        $("div#dimmer").fadeIn(function () {
-                            $("div#thanks-wrapper").fadeIn();
+            $.ajax({
+                url: '/checkout/',
+                type: "GET",
+                data: $("#order-form").serialize(),
+                success: function(msg) {
+                    if (msg) {
+                        alert(msg);
+                    } else {
+                        $("div#cart-content").slideUp();
+                        $("form#order-form").slideUp(function () {
+                            $("div#dimmer").fadeIn(function () {
+                                $("div#thanks-wrapper").fadeIn();
+                            });
                         });
-                    });
+                    }
                 }
             });
         }
