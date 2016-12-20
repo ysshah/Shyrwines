@@ -11,13 +11,17 @@ RED, GREEN, BLUE, RESET_ALL = Fore.RED, Fore.GREEN, Fore.BLUE, Style.RESET_ALL
 class Command(BaseCommand):
     help = 'Sync the Wine database with the Shyr Wine List Excel file.'
 
+    def add_arguments(self, parser):
+        parser.add_argument('excelFile',
+            help='Path to Shyr Wine List Excel file')
+
     def handle(self, *args, **options):
         # Required columns
         required = np.array(['Name', 'Price', 'SKU', 'Vintage', 'Winery',
             'Country', 'Varietal', 'Type'])
 
         # Read Shyr Wine List and check if missing required columns
-        df = pd.read_excel(os.path.expanduser('~/Shyr Wine List.xlsx'))
+        df = pd.read_excel(os.path.expanduser(options['excelFile']))
         if df[required].isnull().any().any():
             for i in df.index[df[required].isnull().any(axis=1)]:
                 print('Error: Row {} is missing {}'.format(i,
