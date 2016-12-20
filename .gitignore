@@ -1,0 +1,6 @@
+*.pyc
+db.sqlite3
+shyrwines/settings_local.py
+shyr/static/factsheets/*.pdf
+shyr/static/wines/*.jpg
+

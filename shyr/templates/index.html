@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="content">
+    <div class="header">Browse by Varietal</div>
+    <div class="panel-container" id="varietals">
+        {% for panel in varietal_panels %}
+        <a id='{{ panel.1 }}' class='panel' href="{% url 'all-wines' %}{{ panel.0 }}">
+            <div class='panel-text-wrapper'>
+                <div class='panel-text'>{{ panel.1 }}</div>
+            </div>
+            <img src='../static/images/{{ panel.2 }}' />
+            <div class='panel-dimmer'></div>
+        </a>
+        {% endfor %}
+    </div>
+
+    <div class="header">Browse by Country</div>
+    <div class="panel-container" id="countries">
+    {% for panel in country_panels %}
+        <a id='{{ panel.1 }}' class='panel' href="{% url 'all-wines' %}{{ panel.0 }}">
+            <div class='panel-text-wrapper'>
+                <div class='panel-text'>{{ panel.1 }}</div>
+            </div>
+            <img src='../static/images/{{ panel.2 }}' />
+            <div class='panel-dimmer'></div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

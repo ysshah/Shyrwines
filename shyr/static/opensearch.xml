@@ -1,0 +1,6 @@
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+	<ShortName>Shyr Wines</ShortName>
+	<Description>Search Shyr Wines</Description>
+	<InputEncoding>UTF-8</InputEncoding>
+	<Url type="text/html" method="get" template="https://www.shyrwines.com/all-wines?q={searchTerms}"/>
+</OpenSearchDescription>

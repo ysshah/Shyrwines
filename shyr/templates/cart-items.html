@@ -1,0 +1,42 @@
+{% if cart %}
+<div id="table">
+    {% for wine in cart %}
+    <div class="cart-wine">
+        <div class="cart-name"><a href="{% url 'view' wine.id %}" class="cart-name-link">{{ wine.name }}</a></div>
+        <div class='cart-quantity'>
+            <form>
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ wine.id }}">
+                <input pattern='\d*' type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57' value='{{ wine.quantity }}' name="quantity">
+            </form>
+        </div>
+        <div class='cart-x'>&times;</div>
+        <div class='cart-unit-price'>${{ wine.price }}</div>
+        <div class='cart-equals'>=</div>
+        <div class='cart-unit-totalprice'>${{ wine.total_price }}</div>
+        <div class='cart-remove'>
+            <form class="remove">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ wine.id }}">
+                <button type="submit" class='remove'>Remove</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+    <div class='cart-totals-row'>
+        <div class='cart-totals-titles'>Subtotal</div>
+        <div class='cart-equals'>=</div>
+        <div id='subtotal' class='cart-totals'>${{ subtotal|floatformat:2 }}</div>
+    </div>
+    <div class='cart-totals-row'>
+        <div class='cart-totals-titles'>Estimated Tax</div>
+        <div class='cart-equals'>=</div>
+        <div id='tax' class='cart-totals'>${{ tax|floatformat:2 }}</div>
+    </div>
+    <div class='cart-totals-row' style='font-size:20px'>
+        <div class='cart-totals-titles'>Total</div>
+        <div class='cart-equals'>=</div>
+        <div id='total' class='cart-totals'>${{ total|floatformat:2 }}</div>
+    </div>
+</div>
+{% endif %}
