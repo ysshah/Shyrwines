@@ -7,7 +7,7 @@
     <div id="left-col">
         <div id="view-pic-wrapper">
             {% if image_exists %}
-            <img id='view-pic' src='{% static "wines" %}/{{ wine.sku }}.jpg' alt='{{ wine.name }}'>
+            <img id='view-pic' src='{% static "images/wines/" %}{{ wine.sku }}.jpg' alt='{{ wine.name }}'>
             {% else %}
             <img id='view-default-pic' src='{% static "images/bottle.svg" %}' alt='{{ wine.name }}'>
             {% endif %}

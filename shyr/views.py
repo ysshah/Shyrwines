@@ -75,7 +75,7 @@ def terms_of_service(request):
 
 def view(request, wine_id):
     wine = get_object_or_404(Wine, pk=wine_id)
-    image_exists = finders.find('wines/{}.jpg'.format(wine.sku))
+    image_exists = finders.find('images/wines/{}.jpg'.format(wine.sku))
     factsheet_exists = finders.find('factsheets/{}.pdf'.format(wine.sku))
     context = {
         'page_title': wine.name + ' | ',

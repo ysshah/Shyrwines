@@ -54,7 +54,7 @@ def _attach_ratings(wines):
             if getattr(wine, rater_abbr):
                 ratings.append((rater_abbr, getattr(wine, rater_abbr)))
         wine.ratings = ratings
-        wine.image_exists = finders.find('wines/{}.jpg'.format(wine.sku))
+        wine.image_exists = finders.find('images/wines/{}.jpg'.format(wine.sku))
 
 
 def getCartContext(request):

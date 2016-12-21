@@ -62,7 +62,7 @@
         {% endif %}
         {% if wine.image_exists %}
         <div class='list-pic-container'>
-            <img class="list-pic" src='{% static "wines" %}/{{ wine.sku }}.jpg' alt='{% static "images/bottle.svg" %}' />
+            <img class="list-pic" src='{% static "images/wines/" %}{{ wine.sku }}.jpg' alt='{% static "images/bottle.svg" %}' />
         </div>
         {% else %}
         <img class="default-pic" src='{% static "images/bottle.svg" %}' alt="{{ wine.name }}" />
