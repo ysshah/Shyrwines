@@ -14,6 +14,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('excelFile',
             help='Path to Shyr Wine List Excel file')
+        parser.add_argument('--check', action='store_true',
+            help='Only check differences, do not sync.')
 
     def handle(self, *args, **options):
         # Required columns
@@ -33,7 +35,7 @@ class Command(BaseCommand):
 
         df = df.where((pd.notnull(df)), None)
 
-        changed = False
+        numInserts, numUpdates = 0, 0
         for i, r in df.iterrows():
             new = {
                 'name': r.Name,
@@ -70,13 +72,17 @@ class Command(BaseCommand):
                     for k in diffKeys:
                         print('    Change {}{}{}\n        {}{}{}\n        {}{}{}'.format(
                             BLUE, k, RESET_ALL, RED, old[k], RESET_ALL, GREEN, new[k], RESET_ALL))
-                    wine.update(**{k: new[k] for k in diffKeys})
-                    changed = True
+                    if not options['check']:
+                        wine.update(**{k: new[k] for k in diffKeys})
+                    numUpdates += 1
             else:
                 new['sku'] = r.SKU
                 print('New SKU {}: {}'.format(new['sku'], new['name']))
-                Wine(**new).save()
-                changed = True
+                if not options['check']:
+                    Wine(**new).save()
+                numInserts += 1
 
-        if not changed:
+        if numInserts + numUpdates == 0:
             print('No differences.')
+        else:
+            print('\n{} updates, {} inserts.'.format(numUpdates, numInserts))
