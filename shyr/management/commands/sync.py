@@ -37,6 +37,7 @@ class Command(BaseCommand):
 
         numInserts, numUpdates = 0, 0
         for i, r in df.iterrows():
+
             new = {
                 'name': r.Name,
                 'count': r.Count,
@@ -64,20 +65,25 @@ class Command(BaseCommand):
 
             if Wine.objects.filter(sku=r.SKU).exists():
                 wine = Wine.objects.filter(sku=r.SKU)
-                old = wine.values(*new.keys())[0]
-                old['price'] = float(old['price'])  # Decimal -> float conversion
-                diffKeys = [k for k in old if old[k] != new[k]]
-                if diffKeys:
-                    print('\nSKU {}: {}'.format(r.SKU, old['name']))
-                    for k in diffKeys:
-                        print('    Change {}{}{}\n        {}{}{}\n        {}{}{}'.format(
-                            BLUE, k, RESET_ALL, RED, old[k], RESET_ALL, GREEN, new[k], RESET_ALL))
+                if r['No-Adv'] == 'N':
+                    print('\nRemove SKU {}: {}'.format(r.SKU, new['name']))
                     if not options['check']:
-                        wine.update(**{k: new[k] for k in diffKeys})
-                    numUpdates += 1
-            else:
+                        wine.delete()
+                else:
+                    old = wine.values(*new.keys()).first()
+                    old['price'] = float(old['price'])  # Decimal -> float conversion
+                    diffKeys = [k for k in old if old[k] != new[k]]
+                    if diffKeys:
+                        print('\nSKU {}: {}'.format(r.SKU, old['name']))
+                        for k in diffKeys:
+                            print('    Change {}{}{}\n        {}{}{}\n        {}{}{}'.format(
+                                BLUE, k, RESET_ALL, RED, old[k], RESET_ALL, GREEN, new[k], RESET_ALL))
+                        if not options['check']:
+                            wine.update(**{k: new[k] for k in diffKeys})
+                        numUpdates += 1
+            elif r['No-Adv'] != 'N':
                 new['sku'] = r.SKU
-                print('New SKU {}: {}'.format(new['sku'], new['name']))
+                print('\nNew SKU {}: {}'.format(new['sku'], new['name']))
                 if not options['check']:
                     Wine(**new).save()
                 numInserts += 1
