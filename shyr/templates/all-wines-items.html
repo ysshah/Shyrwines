@@ -2,7 +2,7 @@
 {% load shyr_tags %}
 
 <div id="sort-bar">
-    <form class="filter">{% csrf_token %}
+    <form>
     {% for key, selected, options, offset in choices %}
     <div class="sort-option-wrapper">
         <div class="sort-option-title">{{ key|title }}</div>

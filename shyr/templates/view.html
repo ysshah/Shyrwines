@@ -2,86 +2,90 @@
 {% load static %}
 
 {% block content %}
-<div id="view-content">
-    <div id="view-title">{{ wine.name }}</div>
-    <div id="left-col">
-        <div id="view-pic-wrapper">
+<div class="container">
+    <h1 class="text-xs-center font-light">{{ wine.name }}</h1>
+    <div class="row">
+        <div class="col-md-3">
             {% if image_exists %}
-            <img id='view-pic' src='{% static "images/wines/" %}{{ wine.sku }}.jpg' alt='{{ wine.name }}'>
+            <img class="img-fluid" src="{% static 'images/wines/' %}{{ wine.sku }}.jpg" alt="{{ wine.name }}">
             {% else %}
-            <img id='view-default-pic' src='{% static "images/bottle.svg" %}' alt='{{ wine.name }}'>
+            <img class="img-fluid" src='{% static "images/bottle.svg" %}' alt='{{ wine.name }}'>
+            {% endif %}
+            {% if factsheet_exists %}
+            <div id="factsheet">
+                <a target='_blank' href='{% static "factsheets" %}/{{ wine.sku }}.pdf'>Fact Sheet</a>
+                <img src='{% static "images/open.svg" %}'>
+            </div>
             {% endif %}
         </div>
-        {% if factsheet_exists %}
-        <div id="factsheet">
-            <a target='_blank' href='{% static "factsheets" %}/{{ wine.sku }}.pdf'>Fact Sheet</a>
-            <img src='{% static "images/open.svg" %}'>
-        </div>
-        {% endif %}
-    </div>
-    <div id="view-info-wrapper">
+        <div class="col-md-6">
+            <div id="view-ratings">
+            {% for rater, rating in ratings %}
+                <div class='view-rating'>{{ rating }} points</div>
+                <div class='view-rater'>{{ rater }}</div><br>
+            {% endfor %}
+            </div>
 
-        <div id="view-ratings">
-        {% for rater, rating in ratings %}
-            <div class='view-rating'>{{ rating }} points</div>
-            <div class='view-rater'>{{ rater }}</div><br>
-        {% endfor %}
-        </div>
+            {% if wine.description %}
+            <h5>Winemaker's Notes</h5>
+            <div>{{ wine.description }}</div>
+            {% endif %}
 
-        {% if wine.description %}
-        <div id="view-description-title" class="view-info-title">Winemaker's Notes</div>
-        <div class="view-info" id="view-description">{{ wine.description }}</div>
-        {% endif %}
+            <table>
+            <tbody>
+                <tr>
+                    <td>Country</td>
+                    <td class="text-xs-right"><a href="{% url 'all-wines' %}?country={{ wine.country }}">{{ wine.country }}</a></td>
+                </tr>
+                {% if wine.region %}
+                <tr>
+                    <td>Region</td>
+                    <td class="text-xs-right"><a href="{% url 'all-wines' %}?region={{ wine.region }}">{{ wine.region }}</a></td>
+                </tr>
+                {% endif %}
 
-        <div class="view-subinfo">
-            <div class="view-info-title">Country</div>
-            <a href="/all-wines?country={{ wine.country }}" class="view-info" id="view-country">{{ wine.country }}</a>
-        </div>
+                {% if wine.appellation %}
+                <tr>
+                    <td>Appellation</td>
+                    <td class="text-xs-right"><a href="{% url 'all-wines' %}?appellation={{ wine.appellation }}">{{ wine.appellation }}</a></td>
+                </tr>
+                {% endif %}
 
-        {% if wine.region %}
-        <div class="view-subinfo">
-            <div class="view-info-title">Region</div>
-            <a class="view-info" id="view-region" href="/all-wines?region={{ wine.region }}">{{ wine.region }}</a>
-        </div>
-        {% endif %}
+                {% if wine.winery %}
+                <tr>
+                    <td>Winery</td>
+                    <td class="text-xs-right">{{ wine.winery }}</td>
+                </tr>
+                {% endif %}
 
-        {% if wine.appellation %}
-        <div class="view-subinfo">
-            <div class="view-info-title">Appellation</div>
-            <a class="view-info" id="view-appellation" href="/all-wines?appellation={{ wine.appellation }}">{{ wine.appellation }}</a>
-        </div>
-        {% endif %}
+                <tr>
+                    <td>Varietal</td>
+                    <td class="text-xs-right"><a href="{% url 'all-wines' %}?varietal={{ wine.varietal }}">{{ wine.varietal }}</a></td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td class="text-xs-right">{{ wine.wine_type }}</td>
+                </tr>
 
-        {% if wine.winery %}
-        <div class="view-subinfo">
-            <div class="view-info-title">Winery</div>
-            <div class="view-info" id="view-winery">{{ wine.winery }}</div>
-        </div>
-        {% endif %}
+            </tbody>
+            </table>
 
-        <div class="view-subinfo">
-            <div class="view-info-title">Varietal</div>
-            <a class="view-info" id="view-varietal" href="/all-wines?varietal={{ wine.varietal }}">{{ wine.varietal }}</a>
         </div>
-        <div class="view-subinfo">
-            <div class="view-info-title">Type</div>
-            <div class="view-info" id="view-type">{{ wine.wine_type }}</div>
-        </div>
-    </div>
-    <div id="view-purchase-wrapper">
-        <div id="view-price">${{ wine.price }}</div>
-        {% if wine.count == 0 %}
-            <div id='view-outofstock'><div>Sold Out</div></div>
-        {% endif %}
-        <div id='add-container'>
-            <form class="add">
-                {% csrf_token %}
-                <input type="hidden" name="name" value="{{ wine.name }}">
-                <input type="hidden" name="id" value="{{ wine.id }}">
-                <div id="view-quantity-label">Quantity:</div>
-                <input pattern="\d*" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id='view-quantity' value='1' type="text" name="quantity">
-                <button type="submit" class="view-add">Add to Cart</button>
-            </form>
+        <div class="col-md-3">
+            <div>${{ wine.price }}</div>
+            {% if wine.count == 0 %}
+                <div>Sold Out</div>
+            {% endif %}
+            <div>
+                <form class="add">
+                    {% csrf_token %}
+                    <input type="hidden" name="name" value="{{ wine.name }}">
+                    <input type="hidden" name="id" value="{{ wine.id }}">
+                    <div id="view-quantity-label">Quantity:</div>
+                    <input pattern="\d*" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id='view-quantity' value='1' type="text" name="quantity">
+                    <button type="submit" class="view-add">Add to Cart</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
