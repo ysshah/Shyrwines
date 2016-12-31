@@ -96,18 +96,6 @@ $(document).ready(function () {
         });
     });
 
-    // $(document).on('change', 'select.filter', function() {
-        // alert('Hello');
-        // console.log('hi1');
-        // var original = $('div#content').html();
-        // $.post('/filter/', $('form.filter').serialize(), function(data) {
-            // var url = [location.protocol, '//', location.host, location.pathname].join('');
-            // window.history.pushState({'html': data.html}, '', url + '?' + data.url);
-            // window.location.href += '#' + data.url
-            // $('div#content').html(data.html);
-        // });
-    // });
-
     /* Validate an email address. */
     function validate_email(passed) {
         var email = $("input#email");

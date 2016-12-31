@@ -2,7 +2,6 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.contrib.staticfiles import finders
-from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
@@ -266,22 +265,6 @@ def remove(request):
         request.session['cart'].pop(request.POST['id'])
         request.session.modified = True
         return HttpResponse('1', content_type='application/json')
-    else:
-        raise Http404
-
-
-def filter(request):
-    if request.is_ajax() and request.POST:
-        params = request.POST.copy()
-        popList = [key for key in params if 'Any' in params[key]] + ['csrfmiddlewaretoken']
-        for key in popList:
-            params.pop(key)
-        data = json.dumps({
-            'url': params.urlencode(),
-            'html': render_to_string('all-wines-items.html',
-                getAllWinesContext(params), request)
-        })
-        return HttpResponse(data, content_type='application/json')
     else:
         raise Http404
 

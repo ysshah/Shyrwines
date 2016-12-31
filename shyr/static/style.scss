@@ -1,28 +1,44 @@
+$price-color: #068e06;
 $primary-color: #8e0606;
 
 @font-face {
-  font-family: 'Roboto';
-  font-weight: 100;
-  font-style: normal;
-  src: local('Roboto Thin'),
-       local('Roboto-Thin'),
-       url('Roboto-Thin.ttf') format('truetype');
+    font-family: 'Roboto';
+    font-weight: 100;
+    font-style: normal;
+    src: local('Roboto Thin'),
+        local('Roboto-Thin'),
+        url('Roboto-Thin.ttf') format('truetype');
 }
 @font-face {
-  font-family: 'Roboto';
-  font-weight: 300;
-  font-style: normal;
-  src: local('Roboto Light'),
-       local('Roboto-Light'),
-       url('Roboto-Light.ttf') format('truetype');
+    font-family: 'Roboto';
+    font-weight: 300;
+    font-style: normal;
+    src: local('Roboto Light'),
+        local('Roboto-Light'),
+        url('Roboto-Light.ttf') format('truetype');
 }
 @font-face {
-  font-family: 'Roboto';
-  font-weight: 400;
-  font-style: normal;
-  src: local('Roboto Regular'),
-       local('Roboto-Regular'),
-       url('Roboto-Regular.ttf') format('truetype');
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-style: normal;
+    src: local('Roboto Regular'),
+        local('Roboto-Regular'),
+        url('Roboto-Regular.ttf') format('truetype');
+}
+
+/* SITE WIDE */
+a {
+    color: black;
+    &:hover {
+        color: black;
+        text-decoration: none;
+    }
+}
+.color {
+    color: $primary-color;
+}
+.font-light {
+    font-weight: 300;
 }
 
 html {
@@ -31,18 +47,30 @@ html {
 }
 body {
     font-family: 'Roboto', sans-serif;
+    font-weight: 300;
     margin-bottom: 60px;
 }
 
-/* SITE WIDE */
-.font-light {
-    font-weight: 300;
+/* NAVIGATION BAR */
+nav {
+    $height: 75px;
+
+    border-bottom: 1px solid $primary-color;
+    .container .row {
+        a:not(:first-child) {
+            line-height: $height;
+            height: $height;
+        }
+        form input {
+            height: 40px;
+            margin-top: ($height - 40px) / 2;
+        }
+    }
 }
 
 /* FOOTER */
 footer {
     bottom: 0;
-    font-weight: 300;
     padding: 3px 0;
     position: absolute;
     width: 100%;
@@ -54,14 +82,12 @@ footer {
     border: 1px solid white;
     color: white;
     font-size: 24px;
-    font-weight: 300;
     padding: 5px 5px;
     position: absolute;
 }
 
 /* ABOUT */
 .about {
-    font-weight: 300;
     line-height: 40px;
     h1 {
         padding-bottom: 10px;
@@ -79,7 +105,6 @@ footer {
 
 /* CONTACT US */
 .contact-us {
-    font-weight: 300;
     line-height: 40px;
     a {
         font-weight: 100;
@@ -87,5 +112,122 @@ footer {
     }
     a:hover {
         text-decoration: none;
+    }
+}
+
+/* VIEW */
+p.view {
+    text-indent: 40px;
+}
+table.view {
+    width: 100%;
+    tbody tr td {
+        font-size: 20px;
+    }
+}
+.view-category {
+    color: $primary-color;
+    font-size: 20px;
+}
+
+/* ALL-WINES */
+span.results {
+    font-size: 30px;
+    font-weight: 100;
+    height: 50px;
+    span {
+        font-weight: 300;
+    }
+}
+span.pages {
+    line-height: 50px;
+    a.page-num {
+        border: 1px solid $primary-color;
+        display: inline-block;
+        height: 27px;
+        line-height: 25px;
+        margin-left: 5px;
+        text-align: center;
+        transition: 0.2s;
+        width: 27px;
+    }
+    a.page-num:hover, a.page-num.selected {
+        background-color: $primary-color;
+        color: white;
+    }
+    .page-dots {
+        margin-left: 5px;
+    }
+}
+.all-wines.row {
+    padding: 1px;
+}
+a.list-wine {
+    $space-around: 7px;
+
+    background-color: white;
+    height: 152px;
+    outline: 1px solid $primary-color;
+    padding: $space-around;
+    position: relative;
+    transition: 0.2s;
+    &:hover {
+        transform: scale(1.05, 1.05);
+        -webkit-transform: scale(1.05, 1.05);
+        z-index: 1;
+    }
+    .list-pic {
+        display: flex;
+        height: 150px - 2 * $space-around;
+        justify-content: center;
+        overflow: hidden;
+        padding: 0;
+        img {
+            height: 100%;
+        }
+    }
+    .list-info {
+        height: 150px - 2 * $space-around;
+        line-height: normal;
+        overflow: hidden;
+        padding: 0 0 0 $space-around;
+        position: static;
+        .name {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: normal;
+            padding-bottom: 5px;
+        }
+        .list-price {
+            bottom: 5px;
+            color: $price-color;
+            font-size: 20px;
+            position: absolute;
+            right: $space-around;
+        }
+        .ratings {
+            padding-top: 5px;
+            span.color ~ span.color {
+                border-left: 1px solid black;
+                padding-left: 6px;
+                margin-left: 2px;
+            }
+        }
+    }
+    .sold-out {
+        color: red;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 24px;
+        margin-left: -$space-around;
+        margin-top: -12px;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        transform: rotate(-21deg);
+        width: 100%;
+    }
+    .sold-out ~ div {
+        opacity: 0.2;
     }
 }

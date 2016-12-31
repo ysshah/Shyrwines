@@ -1,7 +1,80 @@
 {% extends "base.html" %}
+{% load static %}
+{% load shyr_tags %}
 
 {% block content %}
-<div id="content">
-{% include "all-wines-items.html" %}
+<div class="container">
+    <div class="col-md-3">
+        <form>
+        {% for key, selected, options, offset in choices %}
+        <div class="sort-option-wrapper">
+            <div class="sort-option-title">{{ key|title }}</div>
+            <div class='select-window sort'>
+                <div class='select' style='margin-top: {{ offset }}px;'>
+                {% if key != 'sort' %}
+                    <a href='?' class='option'>Any</a>
+                {% endif %}
+                {% for option in options %}
+                    {% if option == selected %}
+                    <div class='option selected'>{{ option }}</div>
+                    {% else %}
+                    <a href='?{% url_replace request key option %}' class='option'>{{ option }}</a>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+            <div class="sort-arrow left"></div>
+        </div>
+        {% endfor %}
+        </form>
+    </div>
+
+    <div class="col-md-9">
+        <div class="row clearfix">
+            {% if query %}
+            <span class="float-xs-left results">Results for "<span>{{ query }}</span>"</span>
+            {% endif %}
+            {% include "pages.html" %}
+        </div>
+        <div class="row all-wines">
+        {% for wine in wines %}
+            <a class="col-lg-4 col-md-6 col-xs-12 list-wine" href="{% url 'view' wine.id %}">
+                {% if wine.count == 0 %}
+                <div class="sold-out">Sold Out</div>
+                {% endif %}
+
+                <div class="col-xs-2 list-pic">
+                    {% if wine.image_exists %}
+                    <img src="{% static 'images/wines/' %}{{ wine.sku }}.jpg" alt="{% static 'images/bottle.svg' %}" />
+                    {% else %}
+                    <img src="{% static 'images/bottle.svg' %}" alt="{{ wine.name }}" />
+                    {% endif %}
+                </div>
+
+                <div class="col-xs-10 list-info">
+                    <div class="name">{{ wine.name }}</div>
+
+                    {% if wine.winery %}
+                    <span class="color">Winery</span>
+                    <span>{{ wine.winery }}</span>
+                    {% endif %}
+
+                    <div class="ratings">
+                        {% for rater, rating in wine.ratings %}
+                        <span class="color">{{ rater }}</span>
+                        <span>{{ rating }}</span>
+                        {% endfor %}
+                    </div>
+                    <div class="list-price">${{ wine.price }}</div>
+                </div>
+            </a>
+        {% endfor %}
+        </div>
+        <div class="hidden-md-up row">
+            {% include "pages.html" %}
+        </div>
+    </div>
 </div>
+
+
 {% endblock content %}

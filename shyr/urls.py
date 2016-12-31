@@ -17,6 +17,5 @@ urlpatterns = [
     url(r'^autocomplete/$', ajax.autocomplete, name='autocomplete'),
     url(r'^checkout/$', ajax.checkout, name='checkout'),
     url(r'^update/$', ajax.update, name='update'),
-    url(r'^remove/$', ajax.remove, name='remove'),
-    url(r'^filter/$', ajax.filter, name='filter')
+    url(r'^remove/$', ajax.remove, name='remove')
 ]
