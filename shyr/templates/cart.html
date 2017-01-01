@@ -1,107 +1,118 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="page-title">Cart</div>
+<h1 class="page-title text-xs-center">Cart</h1>
 
 {% if cart %}
 <div class="cart-wrapper">
-{% include "cart-items.html" %}
+{# {% include "cart-items.html" %} #}
 </div>
-<form id="order-form" action="javascript:void(0);" novalidate>
-    <div id="order-form-title">Order Form</div>
-    <div id="form-name" class="form-divs">
-        <label for="name">Name</label>
-        <input id="name" class="order-form" name="name" type="text" required />
-    </div>
-    <div id="form-email" class="form-divs">
-        <label>Email</label>
-        <input id="email" class="order-form" name="email" type="text" required />
-    </div>
-    <div id="form-phone" class="form-divs">
-        <label>Phone Number</label>
-        <input id="phone" class="order-form" name="phone" type="text" required />
-    </div>
-    <div id="form-address" class="form-divs">
-        <label>Street Address</label>
-        <input id="address" class="order-form" name="address" type="text" required />
-    </div>
-    <div id="form-city" class="form-divs">
-        <label>City</label>
-        <input id="city" name="city" class="order-form" type="text" required />
-    </div>
-    <div id="form-state" class="form-divs">
-        <label>State</label>
-        <select id="state" name="state" class="order-form" required>
-            <option id="default" disabled selected></option>
-            <option>AL</option>
-            <option>AK</option>
-            <option>AZ</option>
-            <option>AR</option>
-            <option id="CA">CA</option>
-            <option>CO</option>
-            <option>CT</option>
-            <option>DE</option>
-            <option>FL</option>
-            <option>GA</option>
-            <option>HI</option>
-            <option>ID</option>
-            <option>IL</option>
-            <option>IN</option>
-            <option>IA</option>
-            <option>KS</option>
-            <option>KY</option>
-            <option>LA</option>
-            <option>ME</option>
-            <option>MD</option>
-            <option>MA</option>
-            <option>MI</option>
-            <option>MN</option>
-            <option>MS</option>
-            <option>MO</option>
-            <option>MT</option>
-            <option>NE</option>
-            <option>NV</option>
-            <option>NH</option>
-            <option>NJ</option>
-            <option>NM</option>
-            <option>NY</option>
-            <option>NC</option>
-            <option>ND</option>
-            <option>OH</option>
-            <option>OK</option>
-            <option>OR</option>
-            <option>PA</option>
-            <option>RI</option>
-            <option>SC</option>
-            <option>SD</option>
-            <option>TN</option>
-            <option>TX</option>
-            <option>UT</option>
-            <option>VT</option>
-            <option>VA</option>
-            <option>WA</option>
-            <option>WV</option>
-            <option>WI</option>
-            <option>WY</option>
-        </select>
-    </div>
-    <div id="form-zipcode" class="form-divs">
-        <label>Zip Code</label>
-        <input id="zipcode" name="zipcode" class="order-form" type="text" required />
-    </div>
-    <div id="form-comment" class="form-divs">
-        <label>Include a comment (Optional)</label>
-        <textarea id="comment" name="comment" class="order-form"></textarea>
-    </div>
-    <div id="form-agree" class="form-divs">
-        <input id="agree" name="agree" type="checkbox" title="Please agree to our terms of service and privacy policy!" required />
-        <label>I confirm that I am at least the age of 21, and have read and agreed to the
-            <a href="terms-of-service" class="link">Terms of Service</a> and
-            <a href="privacy-policy" class="link">Privacy Policy</a>.
-        </label>
-    </div>
-    <button id="submit-order">Submit Order</button>
-</form>
+<div class="container">
+    <h2>Order Form</h2>
+    <form action="javascript:void(0);" novalidate>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label for="name">Name</label>
+                <input id="name" name="name" class="form-control" type="text" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="email">Email</label>
+                <input id="email" name="email" class="form-control" type="email" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="phone">Phone Number</label>
+                <input id="phone" name="phone" class="form-control" type="tel" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-5">
+                <label for="address">Street Address</label>
+                <input id="address" name="address" class="form-control" type="text" required>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="city">City</label>
+                <input id="city" name="city" class="form-control" type="text" required>
+            </div>
+            <div class="form-group col-md-1">
+                <label for="state">State</label>
+                <select id="state" name="state" class="form-control" required>
+                    <option disabled selected></option>
+                    <option>AL</option>
+                    <option>AK</option>
+                    <option>AZ</option>
+                    <option>AR</option>
+                    <option id="CA">CA</option>
+                    <option>CO</option>
+                    <option>CT</option>
+                    <option>DE</option>
+                    <option>FL</option>
+                    <option>GA</option>
+                    <option>HI</option>
+                    <option>ID</option>
+                    <option>IL</option>
+                    <option>IN</option>
+                    <option>IA</option>
+                    <option>KS</option>
+                    <option>KY</option>
+                    <option>LA</option>
+                    <option>ME</option>
+                    <option>MD</option>
+                    <option>MA</option>
+                    <option>MI</option>
+                    <option>MN</option>
+                    <option>MS</option>
+                    <option>MO</option>
+                    <option>MT</option>
+                    <option>NE</option>
+                    <option>NV</option>
+                    <option>NH</option>
+                    <option>NJ</option>
+                    <option>NM</option>
+                    <option>NY</option>
+                    <option>NC</option>
+                    <option>ND</option>
+                    <option>OH</option>
+                    <option>OK</option>
+                    <option>OR</option>
+                    <option>PA</option>
+                    <option>RI</option>
+                    <option>SC</option>
+                    <option>SD</option>
+                    <option>TN</option>
+                    <option>TX</option>
+                    <option>UT</option>
+                    <option>VT</option>
+                    <option>VA</option>
+                    <option>WA</option>
+                    <option>WV</option>
+                    <option>WI</option>
+                    <option>WY</option>
+                </select>
+            </div>
+            <div class="form-group col-md-3">
+                <label for="zipcode">Zip Code</label>
+                <input id="zipcode" name="zipcode" class="form-control" type="number" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="comment">Include a comment (Optional)</label>
+            <textarea id="comment" name="comment" class="form-control"></textarea>
+        </div>
+        <div class="row">
+            <div class="form-check col-md-10">
+                <label class="form-check-label">
+                <input name="agree" class="form-check-input" type="checkbox" title="Please agree to our terms of service and privacy policy!" required>
+                    I confirm that I am at least the age of 21, and have read and agreed to the <a href="{% url 'terms-of-service' %}">Terms of Service</a> and <a href="{% url 'privacy-policy' %}">Privacy Policy</a>.
+                </label>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn">Submit Order</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
 <div id="thanks-wrapper">
     <div id="thanks-container">
         <div id="thanks">Thanks for your order!</div>
