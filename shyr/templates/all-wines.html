@@ -3,7 +3,7 @@
 {% load shyr_tags %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid all-wines">
     <div class="col-md-3">
         <form>
         {% for key, selected, options, offset in choices %}
@@ -38,7 +38,7 @@
         </div>
         <div class="row all-wines">
         {% for wine in wines %}
-            <a class="col-lg-4 col-md-6 col-xs-12 list-wine" href="{% url 'view' wine.id %}">
+            <a class="col-lg-4 col-sm-6 col-xs-12 list-wine" href="{% url 'view' wine.id %}">
                 {% if wine.count == 0 %}
                 <div class="sold-out">Sold Out</div>
                 {% endif %}

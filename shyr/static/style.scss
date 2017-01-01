@@ -37,8 +37,9 @@ a {
 .color {
     color: $primary-color;
 }
-.font-light {
+.page-title {
     font-weight: 300;
+    margin-top: 20px;
 }
 
 html {
@@ -61,10 +62,25 @@ nav {
             line-height: $height;
             height: $height;
         }
+        form {
+            height: $height;
+        }
         form input {
+            border: 1px solid rgba(142,6,6,0.1);
+            border-radius: 0;
             height: 40px;
             margin-top: ($height - 40px) / 2;
+            transition: 0.2s;
+            &:hover, &:focus {
+                border: 1px solid $primary-color;
+            }
         }
+    }
+}
+@media (max-width: 768px) {
+    nav .container .row a:not(:first-child) {
+        height: 40px;
+        line-height: 50px;
     }
 }
 
@@ -131,10 +147,14 @@ table.view {
 }
 
 /* ALL-WINES */
+.all-wines.container-fluid {
+    max-width: 1200px;
+}
 span.results {
     font-size: 30px;
     font-weight: 100;
     height: 50px;
+    line-height: 50px;
     span {
         font-weight: 300;
     }

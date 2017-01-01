@@ -29,15 +29,15 @@
         <nav class="navbar">
             <div class="container">
                 <div class="row">
-                    <a class="col-md-2 col-xs-4" href="{% url 'index' %}">
+                    <a class="col-lg-2 col-md-3 col-sm-4 col-xs-5" href="{% url 'index' %}">
                         <img height="75px" src="{% static 'images/logo.svg' %}" alt="Shyr Wines Logo" />
                     </a>
-                    <form class="col-md-4 push-md-6 col-xs-8" action="{% url 'all-wines' %}">
+                    <form class="col-lg-4 col-md-3 push-md-6 col-sm-8 col-xs-7" action="{% url 'all-wines' %}">
                         <input class="form-control" type="text" placeholder="Search by wine name, keyword..." value="{{ query|default_if_none:'' }}" name="q" autocomplete="off"></input>
                     </form>
-                    <a class="col-md-2 pull-md-4 col-xs-4 text-xs-center" href="{% url 'about' %}">ABOUT</a>
-                    <a class="col-md-2 pull-md-4 col-xs-4 text-xs-center" href="{% url 'contact-us' %}">CONTACT</a>
-                    <a class="col-md-2 pull-md-4 col-xs-4 text-xs-center" href="{% url 'cart' %}">CART</a>
+                    <a class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'about' %}">ABOUT</a>
+                    <a class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'contact-us' %}">CONTACT</a>
+                    <a class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'cart' %}">CART</a>
                 </div>
             </div>
 
