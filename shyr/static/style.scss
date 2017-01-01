@@ -47,6 +47,20 @@ input.form-control, select.form-control, textarea.form-control {
 h1, h2, h3, h5 {
     font-weight: 300;
 }
+button {
+    background-color: white;
+    border: 1px solid $primary-color;
+    cursor: pointer;
+    outline: none;
+    transition: 0.2s;
+    &:hover {
+        background-color: $primary-color;
+        color: white;
+    }
+}
+a.black-link, a.black-link:hover {
+    color: black;
+}
 .color {
     color: $primary-color;
 }
@@ -93,9 +107,6 @@ footer {
     padding: 3px 0;
     position: absolute;
     width: 100%;
-    a, a:hover {
-        color: black;
-    }
 }
 
 /* INDEX */
@@ -252,5 +263,29 @@ a.list-wine {
     }
     .sold-out ~ div {
         opacity: 0.2;
+    }
+}
+
+/* CART */
+.container.cart {
+    .row {
+        height: 50px;
+        line-height: 50px;
+        a {
+
+        }
+        button {
+            height: 50px;
+            line-height: initial;
+            width: 100%;
+        }
+        > div {
+            // Only in between divs, leave 15px on edges
+            // padding: 0 5px;
+        }
+        input {
+            height: 50px;
+            width: 50px;
+        }
     }
 }

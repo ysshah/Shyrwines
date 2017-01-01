@@ -66,9 +66,11 @@ def getCartContext(request):
             wine.total_price = wine.quantity * wine.price
             subtotal += float(wine.total_price)
         context['cart'] = wines
-        context['subtotal'] = subtotal
-        context['tax'] = subtotal * 0.0875
-        context['total'] = subtotal * 1.0875
+        context['totals'] = [
+            ('Subtotal', subtotal),
+            ('Estimated Tax', subtotal * 0.0875),
+            ('Total', subtotal * 1.0875)
+        ]
     else:
         context['cart'] = None
 

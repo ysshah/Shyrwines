@@ -5,17 +5,17 @@
 
 {% if cart %}
 <div class="cart-wrapper">
-{# {% include "cart-items.html" %} #}
+{% include "cart-items.html" %}
 </div>
 <div class="container">
     <h2>Order Form</h2>
     <form action="javascript:void(0);" novalidate>
         <div class="row">
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
                 <label for="name">Name</label>
                 <input id="name" name="name" class="form-control" type="text" required>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-5">
                 <label for="email">Email</label>
                 <input id="email" name="email" class="form-control" type="email" required>
             </div>
@@ -112,7 +112,6 @@
     </form>
 </div>
 
-
 <div id="thanks-wrapper">
     <div id="thanks-container">
         <div id="thanks">Thanks for your order!</div>
@@ -120,6 +119,7 @@
         <a href="/"><button id="continue-shopping">Continue Shopping</button></a>
     </div>
 </div>
+
 {% else %}
 <div id="empty-cart">Your cart is empty!</div>
 {% endif %}
