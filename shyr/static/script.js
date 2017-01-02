@@ -21,68 +21,35 @@ $(document).ready(function () {
         }
     });
 
-    /* Expand or contract sorting options upon arrow click. */
-    // $(".sort-arrow").click(function () {
-    //     var thisWindow = $(this).siblings("div.select-window.sort").get(0);
-    //     if ($(this).hasClass("left")) {
-    //         $(this).data("original", thisWindow.firstChild.style.marginTop);
-    //         var child = $(thisWindow.children[0]);
-    //         $(thisWindow).css({"height": Math.min(407, child.height()),
-    //                        "overflow-y": "scroll",
-    //                        "box-shadow": "0px 0px 5px #8e0606"});
-    //         $(this).removeClass("left");
-    //         $(this).addClass("down");
-    //         child.css("margin-top", "0px");
-    //     } else {
-    //         $(thisWindow).css({"height": "50px",
-    //                        "overflow-y": "hidden",
-    //                        "box-shadow": "none"});
-    //         $(thisWindow).animate({scrollTop: "0px"});
-    //         $(this).removeClass("down");
-    //         $(this).addClass("left");
-    //         $(thisWindow.children[0]).css("margin-top", $(this).data("original"));
-    //         $(this).data("clicked", false);
-    //     }
-    // });
-
-    /* Expand or contract sorting options upon hover. */
-    // $(".select-window.sort").hover(function () {
-    //     $(this).siblings(".sort-arrow").removeClass("left");
-    //     $(this).siblings(".sort-arrow").addClass("down");
-    //     var child = $(this.children[0]);
-    //     $(this).data("original", child.css('marginTop'));
-    //     $(this).css({"height": Math.min(407, child.height()),
-    //                        "overflow-y": "scroll",
-    //                        "box-shadow": "0px 0px 5px #8e0606"});
-    //     child.css("margin-top", "0px");
-    // }, function () {
-    //     $(this).siblings(".sort-arrow").removeClass("down");
-    //     $(this).siblings(".sort-arrow").addClass("left");
-    //     $(this).css({"height": "50px",
-    //                        "overflow-y": "hidden",
-    //                        "box-shadow": "none"});
-    //     $(this).animate({scrollTop: "0px"});
-    //     $(this.children[0]).css("margin-top", $(this).data("original"));
-    // });
-
     /* Adds a wine to the cart from the VIEW page. */
+    $('#nav-cart').popover({
+        trigger: 'manual',
+        content: ' '
+    });
     $('form.add').submit(function(e) {
         e.preventDefault();
+        var name = $(this).children('input[name=name]').val();
+        var quantity = $(this).children('input[name=quantity]').val();
         $.post('/add/', $(this).serialize(), function(data) {
-            if ($(window).width() <= 900) {
+            if ($(window).width() < 768) {
                 $("div#dimmer").fadeIn(function () {
                     $("div#popover-content").fadeIn().delay(1000).fadeOut(function () {
                         $("div#dimmer").fadeOut();
                     });
                 });
             } else {
-                $("div#popover-content").slideDown().delay(1000).slideUp();
+                var popover = $('#nav-cart').data('bs.popover');
+                popover.config.content = name + ' (' + quantity + ') added to cart.';
+                $('#nav-cart').popover('show');
+                setTimeout(function() {
+                    $('#nav-cart').popover('hide');
+                }, 2000);
             }
         });
     });
 
-    /* Update a wine's quantity in the cart upon its quantity focusout. */
-    $(document).on('focusout', 'div.cart-quantity form input', function() {
+    /* Update a wine's quantity in the cart upon its quantity change. */
+    $(document).on('change', 'input.cart-quantity', function() {
         $.post('/update/', $(this).parent().serialize(), function(data) {
             $('div.cart-wrapper').load('/cart-items/');
         });

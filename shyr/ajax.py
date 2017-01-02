@@ -112,25 +112,9 @@ def getAllWinesContext(request):
             field_choices.remove(None)
         if len(field_choices) == 1:
             filter_args[field] = field_choices[0]
-        # else:
-        #     field_choices.insert(0, 'Any')
-        if filter_args.get(field) in field_choices:
-            offset = (field_choices.index(filter_args[field]) + 1) * -51
-        else:
-            offset = 0
-        choices.append((field, filter_args.get(field, 'Any'), field_choices, offset))
-
-    if request.GET.get('price') in price_options:
-        offset = (price_options.index(request.GET['price']) + 1) * -51
-    else:
-        offset = 0
-    choices.append(('price', request.GET.get('price', 'Any'), price_options, offset))
-
-    if request.GET.get('sort') in sort_options:
-        offset = sort_options.index(request.GET['sort']) * -51
-    else:
-        offset = 0
-    choices.append(('sort', request.GET.get('sort', sort_options[0]), sort_options, offset))
+        choices.append((field, filter_args.get(field, 'Any'), field_choices))
+    choices.append(('price', request.GET.get('price', 'Any'), price_options))
+    choices.append(('sort', request.GET.get('sort', sort_options[0]), sort_options))
 
     # Sorting results
     if 'sort' in request.GET:

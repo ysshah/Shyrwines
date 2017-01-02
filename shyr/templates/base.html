@@ -37,18 +37,11 @@
                     </form>
                     <a class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'about' %}">ABOUT</a>
                     <a class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'contact-us' %}">CONTACT</a>
-                    <a class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'cart' %}">CART</a>
+                    <a id="nav-cart" class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'cart' %}" data-container="body" data-toggle="popover" data-placement="bottom" data-offset="15px 0">CART</a>
                 </div>
             </div>
 
-
         {% comment %}
-            <form class="search" method="get" action="{% url 'all-wines' %}">
-                <input autocomplete="off" name="q" id="nav-search" type="text" placeholder="Search by wine name, keyword..." value='{{ query|default_if_none:"" }}' />
-                <div id="mag-circle"></div>
-                <div id="mag-handle"></div>
-                <div id="auto-container"></div>
-            </form>
             <div id="nav-facebook" class="nav-social">
                 <a class="title" href="https://www.facebook.com/shyrwines" target="_blank">FACEBOOK PAGE</a>
                 <div class="fb-like widget" data-href="https://www.facebook.com/shyrwines" data-layout="button" data-action="like" data-show-faces="true" data-share="false"></div>
@@ -56,16 +49,11 @@
         {% endcomment %}
         </nav>
 
-        {% comment %}
-        <div id="nav-border"></div>
-        <div id="dimmer"></div>
-        {% endcomment %}
-
         {% block content %}{% endblock content %}
 
         <footer>
             <div class="container text-xs-center">
-                <span>&copy; 2014 - 2016 Shyr Wines</span>
+                <span>&copy; 2014 - 2017 Shyr Wines</span>
                 <span class="hidden-xs-down">&middot;</span>
                 <br class="hidden-sm-up">
                 <a class="black-link" href="{% url 'terms-of-service' %}">TERMS OF SERVICE</a>

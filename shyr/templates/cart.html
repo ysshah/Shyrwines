@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-5">
+            <div class="form-group col-md-4">
                 <label for="address">Street Address</label>
                 <input id="address" name="address" class="form-control" type="text" required>
             </div>
@@ -33,7 +33,7 @@
                 <label for="city">City</label>
                 <input id="city" name="city" class="form-control" type="text" required>
             </div>
-            <div class="form-group col-md-1">
+            <div class="form-group col-md-2">
                 <label for="state">State</label>
                 <select id="state" name="state" class="form-control" required>
                     <option disabled selected></option>
@@ -99,25 +99,25 @@
             <textarea id="comment" name="comment" class="form-control"></textarea>
         </div>
         <div class="row">
-            <div class="form-check col-md-10">
+            <div class="col-md-9 form-check cart">
                 <label class="form-check-label">
                 <input name="agree" class="form-check-input" type="checkbox" title="Please agree to our terms of service and privacy policy!" required>
                     I confirm that I am at least the age of 21, and have read and agreed to the <a href="{% url 'terms-of-service' %}">Terms of Service</a> and <a href="{% url 'privacy-policy' %}">Privacy Policy</a>.
                 </label>
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn">Submit Order</button>
+            <div class="col-md-3">
+                <button id="submit-order" type="submit">Submit Order</button>
             </div>
         </div>
     </form>
 </div>
 
-<div id="thanks-wrapper">
-    <div id="thanks-container">
-        <div id="thanks">Thanks for your order!</div>
-        <div id="reachout">We will reach out to you shortly.</div>
-        <a href="/"><button id="continue-shopping">Continue Shopping</button></a>
-    </div>
+<div id="thanks-container">
+    <div>Thanks for your order!</div>
+    <div>We will reach out to you shortly.</div>
+    <a href="{% url 'index' %}">
+        <button>Continue Shopping</button>
+    </a>
 </div>
 
 {% else %}

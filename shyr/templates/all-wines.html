@@ -5,28 +5,27 @@
 {% block content %}
 <div class="container-fluid all-wines">
     <div class="col-md-3">
-        <form>
-        {% for key, selected, options, offset in choices %}
-        <div class="sort-option-wrapper">
-            <div class="sort-option-title">{{ key|title }}</div>
-            <div class='select-window sort'>
-                <div class='select' style='margin-top: {{ offset }}px;'>
-                {% if key != 'sort' %}
-                    <a href='?' class='option'>Any</a>
+        {% for key, selected, options in choices %}
+        <a data-toggle="collapse" href="#{{ key }}-collapse">
+            <h4>{{ key|title }}</h4>
+        </a>
+        <div class="collapse list-group" id="{{ key }}-collapse">
+
+            {% if key != 'sort' %}
+            <a href='?' class="list-group-item list-group-item-action">Any</a>
+            {% endif %}
+
+            {% for option in options %}
+                {% if option == selected %}
+                <a class="list-group-item list-group-item-action active">{{ option }}</a>
+                {% else %}
+                <a class="list-group-item list-group-item-action" href="?{% url_replace request key option %}">{{ option }}</a>
                 {% endif %}
-                {% for option in options %}
-                    {% if option == selected %}
-                    <div class='option selected'>{{ option }}</div>
-                    {% else %}
-                    <a href='?{% url_replace request key option %}' class='option'>{{ option }}</a>
-                    {% endif %}
-                {% endfor %}
-                </div>
-            </div>
-            <div class="sort-arrow left"></div>
+            {% endfor %}
+
         </div>
+        <div class="sort-arrow left"></div>
         {% endfor %}
-        </form>
     </div>
 
     <div class="col-md-9">

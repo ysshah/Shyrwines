@@ -36,6 +36,11 @@ body {
     font-weight: 300;
     margin-bottom: 60px;
 }
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 input.form-control, select.form-control, textarea.form-control {
     border: 1px solid rgba(142,6,6,0.1);
     border-radius: 0;
@@ -44,7 +49,7 @@ input.form-control, select.form-control, textarea.form-control {
         border: 1px solid $primary-color;
     }
 }
-h1, h2, h3, h5 {
+h1, h2, h3, h4, h5 {
     font-weight: 300;
 }
 button {
@@ -56,6 +61,9 @@ button {
     &:hover {
         background-color: $primary-color;
         color: white;
+    }
+    &:focus {
+        outline: 0;
     }
 }
 a.black-link, a.black-link:hover {
@@ -70,10 +78,11 @@ a.black-link, a.black-link:hover {
 }
 
 /* NAVIGATION BAR */
-nav {
+nav.navbar {
     $height: 75px;
 
     border-bottom: 1px solid $primary-color;
+    border-radius: 0;
     a:not(:first-child) {
         color: black;
         font-size: 18px;
@@ -92,12 +101,21 @@ nav {
             margin-top: ($height - 40px) / 2;
         }
     }
-
+    @media (max-width: 767px) {
+        a:not(:first-child) {
+            height: 40px;
+            line-height: 50px;
+        }
+    }
 }
-@media (max-width: 768px) {
-    nav a:not(:first-child) {
-        height: 40px;
-        line-height: 50px;
+.popover.bs-tether-element-attached-top {
+    border-color: $primary-color;
+    border-radius: 0;
+    &::after {
+        border-bottom-color: white;
+    }
+    &::before {
+        border-bottom-color: $primary-color;
     }
 }
 
@@ -140,18 +158,29 @@ footer {
         font-weight: 100;
         font-size: 32px;
         &:hover {
+            border-bottom: 1px solid #014c8c;
             text-decoration: none;
         }
     }
 }
 
 /* VIEW */
+.view {
+    div.img-wrapper {
+        border: 1px solid $primary-color;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    img.open {
+        height: 16px;
+    }
+}
 p.view {
     text-indent: 40px;
 }
 table.view {
     width: 100%;
-    tbody tr td {
+    td {
         font-size: 20px;
     }
 }
@@ -159,10 +188,44 @@ table.view {
     color: $primary-color;
     font-size: 20px;
 }
+.view-price {
+    color: $price-color;
+    font-size: 32px;
+}
+div.add {
+    position: relative;
+    label, input, button {
+        height: 50px;
+    }
+    label {
+        line-height: 50px;
+        margin-bottom: 0;
+    }
+    input {
+        float: right;
+        text-align: center;
+        width: 50px;
+    }
+    button {
+        margin-top: -1px;
+        width: 100%;
+    }
+}
 
 /* ALL-WINES */
 .all-wines.container-fluid {
-    max-width: 1200px;
+    max-width: 1140px;
+}
+.list-group-item {
+    border-color: $primary-color;
+    &:first-child, &:last-child {
+        border-radius: 0;
+    }
+}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    color: white !important;
 }
 span.results {
     font-size: 30px;
@@ -200,6 +263,7 @@ a.list-wine {
     $space-around: 7px;
 
     background-color: white;
+    color: black;
     height: 152px;
     outline: 1px solid $primary-color;
     padding: $space-around;
@@ -269,23 +333,55 @@ a.list-wine {
 /* CART */
 .container.cart {
     .row {
-        height: 50px;
         line-height: 50px;
-        a {
-
-        }
         button {
-            height: 50px;
+            height: 35px;
             line-height: initial;
-            width: 100%;
+            width: 75px;
         }
-        > div {
-            // Only in between divs, leave 15px on edges
-            // padding: 0 5px;
-        }
-        input {
+        input.cart-quantity {
             height: 50px;
+            text-align: center;
             width: 50px;
         }
+        @media (min-width: 768px) {
+            > div:not(.remove):not(:first-child) {
+                padding-left: 5px;
+            }
+            > div:not(.remove) {
+                padding-right: 5px;
+            }
+        }
     }
+    .row.wine {
+        > div.name {
+            display: flex;
+            flex-direction: column;
+            height: 50px;
+            justify-content: center;
+            a {
+                line-height: 20px;
+            }
+        }
+        @media (max-width: 767px) {
+            border-bottom: 1px solid $primary-color;
+            padding-bottom: 15px;
+            &:not(:first-child) {
+                padding-top: 7.5px;
+            }
+            > div.remove {
+                padding-left: 5px;
+            }
+        }
+    }
+}
+.form-check.cart {
+    display: flex;
+    flex-direction: column;
+    height: 50px;
+    justify-content: center;
+}
+button#submit-order {
+    height: 50px;
+    width: 100%;
 }
