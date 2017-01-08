@@ -1,5 +1,6 @@
-$price-color: #068e06;
-$primary-color: #8e0606;
+$price-color: rgb(6,142,6);
+$primary-color: rgb(142,6,6);
+$primary-color-light: rgba(142,6,6,0.2);
 
 @font-face {
     font-family: 'Roboto';
@@ -34,7 +35,7 @@ html {
 body {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
-    margin-bottom: 60px;
+    margin-bottom: 100px;
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
@@ -42,7 +43,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 input.form-control, select.form-control, textarea.form-control {
-    border: 1px solid rgba(142,6,6,0.1);
+    border: 1px solid $primary-color-light;
     border-radius: 0;
     transition: 0.2s;
     &:hover, &:focus {
@@ -52,10 +53,18 @@ input.form-control, select.form-control, textarea.form-control {
 h1, h2, h3, h4, h5 {
     font-weight: 300;
 }
-button {
+a:focus {
+    outline: 0;
+}
+a.black-link, a.black-link:hover {
+    color: black;
+}
+.btn {
     background-color: white;
     border: 1px solid $primary-color;
-    cursor: pointer;
+    border-radius: 0;
+    color: black;
+    font-weight: 300;
     outline: none;
     transition: 0.2s;
     &:hover {
@@ -66,11 +75,14 @@ button {
         outline: 0;
     }
 }
-a.black-link, a.black-link:hover {
-    color: black;
-}
 .color {
     color: $primary-color;
+}
+.modal-content {
+    border-radius: 0;
+}
+.modal-footer {
+    border-top: 1px solid $primary-color-light;
 }
 .page-title {
     margin-bottom: 15px;
@@ -83,7 +95,8 @@ nav.navbar {
 
     border-bottom: 1px solid $primary-color;
     border-radius: 0;
-    a:not(:first-child) {
+    padding: 1rem;
+    .row > a:not(:first-child) {
         color: black;
         font-size: 18px;
         height: $height;
@@ -96,14 +109,30 @@ nav.navbar {
     }
     form {
         height: $height;
-        input {
+        @media (max-width: 575px) {
+            height: initial;
+        }
+        > input {
             height: 40px;
             margin-top: ($height - 40px) / 2;
         }
+        > #auto-container {
+            background-color: white;
+            margin-top: -1px;
+            position: relative;
+            z-index: 1;
+            a:focus, a:hover {
+                background-color: $primary-color-light;
+            }
+            span.match {
+                font-weight: 400;
+                text-decoration: underline;
+            }
+        }
     }
-    @media (max-width: 767px) {
-        a:not(:first-child) {
-            height: 40px;
+    @media (max-width: 991px) {
+        .row > a:not(:first-child) {
+            height: 35px;
             line-height: 50px;
         }
     }
@@ -111,6 +140,7 @@ nav.navbar {
 .popover.bs-tether-element-attached-top {
     border-color: $primary-color;
     border-radius: 0;
+    font: inherit;
     &::after {
         border-bottom-color: white;
     }
@@ -166,31 +196,47 @@ footer {
 
 /* VIEW */
 .view {
+    div.description {
+        font-size: 20px;
+    }
     div.img-wrapper {
         border: 1px solid $primary-color;
         padding: 15px;
         margin-bottom: 15px;
+        @media (max-width: 767px) {
+            display: inline-block;
+            > img {
+                max-height: 250px;
+            }
+        }
     }
     img.open {
         height: 16px;
     }
-}
-p.view {
-    text-indent: 40px;
-}
-table.view {
-    width: 100%;
-    td {
-        font-size: 20px;
+    p.description {
+        text-align: justify;
+        text-indent: 40px;
     }
-}
-.view-category {
-    color: $primary-color;
-    font-size: 20px;
-}
-.view-price {
-    color: $price-color;
-    font-size: 32px;
+    .price {
+        color: $price-color;
+        font-size: 32px;
+    }
+    table {
+        width: 100%;
+        td {
+            font-size: 20px;
+        }
+        td:nth-child(odd) {
+            color: $primary-color;
+        }
+    }
+    .ratings {
+        span.color {
+            border-left: 1px solid black;
+            padding-left: 6px;
+            margin-left: 2px;
+        }
+    }
 }
 div.add {
     position: relative;
@@ -336,8 +382,6 @@ a.list-wine {
         line-height: 50px;
         button {
             height: 35px;
-            line-height: initial;
-            width: 75px;
         }
         input.cart-quantity {
             height: 50px;
@@ -375,13 +419,22 @@ a.list-wine {
         }
     }
 }
-.form-check.cart {
-    display: flex;
-    flex-direction: column;
-    height: 50px;
-    justify-content: center;
+form#order {
+    .form-check {
+        display: flex;
+        flex-direction: column;
+        height: 50px;
+        justify-content: center;
+    }
+    button {
+        height: 50px;
+        width: 100%;
+    }
 }
-button#submit-order {
-    height: 50px;
-    width: 100%;
+#thanks-modal div.modal-content {
+    padding: 15px;
+    text-align: center;
+    div {
+        padding: 15px 0;
+    }
 }

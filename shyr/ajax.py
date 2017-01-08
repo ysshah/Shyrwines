@@ -202,6 +202,7 @@ def autocomplete(request):
 
 
 def checkout(request):
+    print(request.GET)
     if request.is_ajax() and request.GET:
         context = getCartContext(request)
         context['name'] = request.GET['name']
@@ -224,7 +225,7 @@ def checkout(request):
             html_message=msg_html
         )
         if sent:
-            request.session.pop('cart')
+            # request.session.pop('cart')
             return HttpResponse('0', content_type='application/json')
         else:
             return HttpResponse('Error sending email.',

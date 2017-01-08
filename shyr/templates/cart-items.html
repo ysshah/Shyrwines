@@ -9,7 +9,7 @@
             <form class="remove">
                 {% csrf_token %}
                 <input type="hidden" name="id" value="{{ wine.id }}">
-                <button type="submit">Remove</button>
+                <button class="btn" type="submit">Remove</button>
             </form>
         </div>
         <div class="col-md-1 pull-md-2 offset-md-0 col-xs-2 offset-xs-2">

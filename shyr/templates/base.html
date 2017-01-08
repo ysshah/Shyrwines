@@ -7,6 +7,7 @@
         <script type="text/javascript" src="{% static 'jquery-3.1.1.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'tether.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'bootstrap.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'jquery.validate.min.js' %}"></script>
 
         {% comment %}
         <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet" type="text/css" />
@@ -20,24 +21,25 @@
         <script type="text/javascript" src="{% static 'script.js' %}"></script>
         <link rel="icon" href="{% static 'images/logo-bottle.png' %}" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="google" value="notranslate" />
-        <link rel="search" type="application/opensearchdescription+xml" title="Shyr Wines" href="{% static 'opensearch.xml' %}" />
-        <meta name="google-site-verification" content="HNUubO2s2NhukmIDIZmNIprxQcz8jmNu6GvqgYiYygs" />
+        <meta name="google" value="notranslate">
+        <link rel="search" type="application/opensearchdescription+xml" title="Shyr Wines" href="{% static 'opensearch.xml' %}">
+        <meta name="google-site-verification" content="HNUubO2s2NhukmIDIZmNIprxQcz8jmNu6GvqgYiYygs">
         <title>{{ page_title }}Shyr Wines</title>
     </head>
     <body>
         <nav class="navbar">
             <div class="container">
                 <div class="row">
-                    <a class="col-lg-2 col-md-3 col-sm-4 col-xs-5" href="{% url 'index' %}">
+                    <a class="col-lg-2 col-md-3 col-sm-4 text-sm-left col-xs-12 text-xs-center" href="{% url 'index' %}">
                         <img height="75px" src="{% static 'images/logo.svg' %}" alt="Shyr Wines Logo" />
                     </a>
-                    <form class="col-lg-4 col-md-3 push-md-6 col-sm-8 col-xs-7" action="{% url 'all-wines' %}">
-                        <input class="form-control" type="text" placeholder="Search by wine name, keyword..." value="{{ query|default_if_none:'' }}" name="q" autocomplete="off"></input>
+                    <form class="col-lg-4 col-md-9 push-lg-6 col-sm-8 col-xs-12" action="{% url 'all-wines' %}">
+                        <input class="form-control" type="text" placeholder="Search by wine name, keyword..." value="{{ query|default_if_none:'' }}" name="q" autocomplete="off" id="nav-search">
+                        <div class="list-group" id="auto-container"></div>
                     </form>
-                    <a class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'about' %}">ABOUT</a>
-                    <a class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'contact-us' %}">CONTACT</a>
-                    <a id="nav-cart" class="col-md-2 pull-md-3 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'cart' %}" data-container="body" data-toggle="popover" data-placement="bottom" data-offset="15px 0">CART</a>
+                    <a class="col-lg-2 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'about' %}">ABOUT</a>
+                    <a class="col-lg-2 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'contact-us' %}">CONTACT</a>
+                    <a id="nav-cart" class="col-lg-2 pull-lg-4 col-xs-4 text-xs-center" href="{% url 'cart' %}" data-container="body" data-toggle="popover" data-placement="bottom" data-offset="15px 0">CART</a>
                 </div>
             </div>
 

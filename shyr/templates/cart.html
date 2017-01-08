@@ -9,7 +9,7 @@
 </div>
 <div class="container">
     <h2>Order Form</h2>
-    <form action="javascript:void(0);" novalidate>
+    <form id="order" novalidate>
         <div class="row">
             <div class="form-group col-md-4">
                 <label for="name">Name</label>
@@ -99,25 +99,27 @@
             <textarea id="comment" name="comment" class="form-control"></textarea>
         </div>
         <div class="row">
-            <div class="col-md-9 form-check cart">
+            <div class="col-md-9 form-check">
                 <label class="form-check-label">
                 <input name="agree" class="form-check-input" type="checkbox" title="Please agree to our terms of service and privacy policy!" required>
                     I confirm that I am at least the age of 21, and have read and agreed to the <a href="{% url 'terms-of-service' %}">Terms of Service</a> and <a href="{% url 'privacy-policy' %}">Privacy Policy</a>.
                 </label>
             </div>
             <div class="col-md-3">
-                <button id="submit-order" type="submit">Submit Order</button>
+                <button class="btn" type="submit">Submit Order</button>
             </div>
         </div>
     </form>
 </div>
 
-<div id="thanks-container">
-    <div>Thanks for your order!</div>
-    <div>We will reach out to you shortly.</div>
-    <a href="{% url 'index' %}">
-        <button>Continue Shopping</button>
-    </a>
+<div class="modal fade" id="thanks-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <h5 class="modal-title">Thanks for your order!</h5>
+            <div>We will reach out to you shortly.</div>
+            <a href="{% url 'index' %}" class="btn">Continue Shopping</a>
+        </div>
+    </div>
 </div>
 
 {% else %}
