@@ -3,27 +3,21 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="font-light">Browse by Varietal</h1>
+{% for category, panels in categories %}
+    <h1 class="page-title text-md-left text-xs-center">Popular {{ category }}</h1>
     <div class="row">
-        {% for panel in varietal_panels %}
-        <a id='{{ panel.1 }}' class="col-md-3" href="{% url 'all-wines' %}{{ panel.0 }}">
-            <div class="panel-text">{{ panel.1 }}</div>
-            <img src="{% static 'images' %}/{{ panel.2 }}" class="img-fluid">
-            <div class="panel-dimmer"></div>
+    {% for link, text, image in panels %}
+        <a class="col-lg-3 col-md-6 panel" href="{% url 'all-wines' %}{{ link }}">
+            <div>{{ text }}</div>
+            <img src="{% static 'images' %}/{{ image }}" class="img-fluid">
         </a>
-        {% endfor %}
+    {% endfor %}
     </div>
+{% endfor %}
 
-    <h1 class="font-light">Browse by Country</h1>
-    <div class="row">
-        {% for panel in country_panels %}
-        <a id='{{ panel.1 }}' class="col-md-3" href="{% url 'all-wines' %}{{ panel.0 }}">
-            <div class="panel-text">{{ panel.1 }}</div>
-            <img src="{% static 'images' %}/{{ panel.2 }}" class="img-fluid">
-            <div class="panel-dimmer"></div>
-        </a>
-        {% endfor %}
-    </div>
+    <h1 class="page-title text-md-left text-xs-center">
+        <a class="black-link" href="{% url 'all-wines' %}">Browse all wines...</a>
+    </h1>
 
 </div>
 {% endblock content %}

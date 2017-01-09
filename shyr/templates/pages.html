@@ -2,22 +2,22 @@
 
 <span class="float-xs-right pages">
     {% if wines.number != 1 %}
-    <a class="page-num" href="?{% url_replace request 'page' 1 %}">1</a>
+    <a class="btn" href="?{% url_page request 1 %}">1</a>
     {% endif %}
     {% if wines.number > 3 %}
     <span class="page-dots">&middot;&middot;&middot;</span>
     {% endif %}
     {% if wines.has_previous and wines.previous_page_number != 1 %}
-    <a class="page-num" href="?{% url_replace request 'page' wines.previous_page_number %}">{{ wines.previous_page_number }}</a>
+    <a class="btn" href="?{% url_page request wines.previous_page_number %}">{{ wines.previous_page_number }}</a>
     {% endif %}
-    <a class="page-num selected">{{ wines.number }}</a>
+    <a class="btn selected">{{ wines.number }}</a>
     {% if wines.has_next and wines.next_page_number != wines.paginator.num_pages %}
-    <a class="page-num" href="?{% url_replace request 'page' wines.next_page_number %}">{{ wines.next_page_number }}</a>
+    <a class="btn" href="?{% url_page request wines.next_page_number %}">{{ wines.next_page_number }}</a>
     {% endif %}
     {% if wines.number < wines.paginator.num_pages|add:"-2" %}
     <span class="page-dots">&middot;&middot;&middot;</span>
     {% endif %}
     {% if wines.number != wines.paginator.num_pages %}
-    <a class="page-num" href="?{% url_replace request 'page' wines.paginator.num_pages %}">{{ wines.paginator.num_pages }}</a>
+    <a class="btn" href="?{% url_page request wines.paginator.num_pages %}">{{ wines.paginator.num_pages }}</a>
     {% endif %}
 </span>

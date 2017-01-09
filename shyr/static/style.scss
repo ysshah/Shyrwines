@@ -1,3 +1,5 @@
+@import "bourbon/bourbon";
+
 $price-color: rgb(6,142,6);
 $primary-color: rgb(142,6,6);
 $primary-color-light: rgba(142,6,6,0.2);
@@ -39,13 +41,13 @@ body {
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
+    @include appearance(none);
     margin: 0;
 }
 input.form-control, select.form-control, textarea.form-control {
     border: 1px solid $primary-color-light;
     border-radius: 0;
-    transition: 0.2s;
+    @include transition(0.2s);
     &:hover, &:focus {
         border: 1px solid $primary-color;
     }
@@ -66,7 +68,7 @@ a.black-link, a.black-link:hover {
     color: black;
     font-weight: 300;
     outline: none;
-    transition: 0.2s;
+    @include transition(0.2s);
     &:hover {
         background-color: $primary-color;
         color: white;
@@ -77,6 +79,17 @@ a.black-link, a.black-link:hover {
 }
 .color {
     color: $primary-color;
+}
+.list-group-item {
+    border-color: $primary-color;
+    &:first-child, &:last-child {
+        border-radius: 0;
+    }
+}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    color: white !important;
 }
 .modal-content {
     border-radius: 0;
@@ -101,7 +114,7 @@ nav.navbar {
         font-size: 18px;
         height: $height;
         line-height: $height;
-        &:hover {
+        &:focus, &:hover {
             color: $primary-color;
             font-weight: 400;
             text-decoration: none;
@@ -109,20 +122,27 @@ nav.navbar {
     }
     form {
         height: $height;
-        @media (max-width: 575px) {
-            height: initial;
-        }
         > input {
             height: 40px;
             margin-top: ($height - 40px) / 2;
+        }
+        @media (max-width: 575px) {
+            height: initial;
+            > input {
+                margin-top: 15px;
+            }
         }
         > #auto-container {
             background-color: white;
             margin-top: -1px;
             position: relative;
-            z-index: 1;
+            z-index: 2;
             a:focus, a:hover {
                 background-color: $primary-color-light;
+            }
+            span.field {
+                color: $primary-color;
+                font-weight: 400;
             }
             span.match {
                 font-weight: 400;
@@ -158,13 +178,38 @@ footer {
 }
 
 /* INDEX */
-.panel-text {
-    background-color: rgba(0,0,0,0.5);
-    border: 1px solid white;
-    color: white;
-    font-size: 24px;
-    padding: 5px 5px;
-    position: absolute;
+a.panel {
+    display: block;
+    @media (max-width: 991px) {
+        height: 150px;
+        margin-bottom: 30px;
+        overflow-y: hidden;
+        > img {
+            margin-top: -46%;
+        }
+    }
+    @media (max-width: 767px) {
+        margin-bottom: 15px;
+    }
+    > img {
+        @include transition(0.2s);
+    }
+    &:hover > img {
+        @include filter(brightness(50%));
+    }
+    > div {
+        background-color: rgba(0,0,0,0.5);
+        border: 1px solid white;
+        color: white;
+        font-size: 20px;
+        @include transform(translate(-50%, -50%));
+        left: 50%;
+        padding: 5px 10px;
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        z-index: 1;
+    }
 }
 
 /* ABOUT */
@@ -262,16 +307,87 @@ div.add {
 .all-wines.container-fluid {
     max-width: 1140px;
 }
-.list-group-item {
-    border-color: $primary-color;
-    &:first-child, &:last-child {
-        border-radius: 0;
+a.close-cross {
+    $cross-size: 20px;
+
+    height: $cross-size;
+    opacity: 0.4;
+    position: absolute;
+    width: $cross-size;
+    &:hover {
+        opacity: 1;
+    }
+    &:after, &:before {
+        position: absolute;
+        left: ($cross-size - 2px) / 2;
+        content: '';
+        height: $cross-size;
+        width: 2px;
+        background-color: $primary-color;
+    }
+    &:after {
+        @include transform(rotate(-45deg));
+    }
+    &:before {
+        @include transform(rotate(45deg));
+    }
+    ~ .value {
+        margin-left: 25px;
     }
 }
-.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
-    background-color: $primary-color;
-    border-color: $primary-color;
-    color: white !important;
+a.key-collapse {
+    color: black;
+    @include display(flex);
+    @include justify-content(space-between);
+    &:focus, &:hover {
+        color: $primary-color;
+        text-decoration: none;
+    }
+    div.collapse-notch {
+        border-bottom: 2px solid black;
+        border-left: 2px solid black;
+        height: 15px;
+        @include transition(0.2s);
+        position: relative;
+        right: 5px;
+        top: 5px;
+        width: 15px;
+    }
+    &.collapsed div.collapse-notch {
+        @include transform(rotate(45deg));
+    }
+    &:hover, &.collapsed:hover, &:not(.collapsed) {
+        div.collapse-notch {
+            border-color: $primary-color;
+            @include transform(rotate(-45deg));
+        }
+    }
+}
+div.pages-row {
+    height: 50px;
+}
+div.options {
+    margin-left: 25px;
+    > a {
+        display: block;
+    }
+}
+h4.key {
+    margin-bottom: 5px;
+    margin-top: 10px;
+    position: relative;
+    @media (min-width: 768px) {
+        &:first-child {
+            margin-top: 50px;
+        }
+    }
+    &:not(:first-child) {
+        border-top: 1px solid $primary-color;
+        padding-top: 10px;
+    }
+    &.empty {
+        color: rgba(0,0,0,0.3);
+    }
 }
 span.results {
     font-size: 30px;
@@ -284,19 +400,17 @@ span.results {
 }
 span.pages {
     line-height: 50px;
-    a.page-num {
-        border: 1px solid $primary-color;
-        display: inline-block;
+    a.btn {
         height: 27px;
         line-height: 25px;
         margin-left: 5px;
-        text-align: center;
-        transition: 0.2s;
+        padding: 0;
         width: 27px;
     }
-    a.page-num:hover, a.page-num.selected {
+    a.btn.selected {
         background-color: $primary-color;
         color: white;
+        cursor: default;
     }
     .page-dots {
         margin-left: 5px;
@@ -314,16 +428,15 @@ a.list-wine {
     outline: 1px solid $primary-color;
     padding: $space-around;
     position: relative;
-    transition: 0.2s;
+    @include transition(0.2s);
     &:hover {
-        transform: scale(1.05, 1.05);
-        -webkit-transform: scale(1.05, 1.05);
+        @include transform(scale(1.05, 1.05));
         z-index: 1;
     }
     .list-pic {
-        display: flex;
+        @include display(flex);
         height: 150px - 2 * $space-around;
-        justify-content: center;
+        @include justify-content(center);
         overflow: hidden;
         padding: 0;
         img {
@@ -368,7 +481,7 @@ a.list-wine {
         position: absolute;
         text-align: center;
         top: 50%;
-        transform: rotate(-21deg);
+        @include transform(rotate(-21deg));
         width: 100%;
     }
     .sold-out ~ div {
@@ -399,10 +512,10 @@ a.list-wine {
     }
     .row.wine {
         > div.name {
-            display: flex;
-            flex-direction: column;
+            @include display(flex);
+            @include flex-direction(column);
             height: 50px;
-            justify-content: center;
+            @include justify-content(center);
             a {
                 line-height: 20px;
             }
@@ -421,10 +534,12 @@ a.list-wine {
 }
 form#order {
     .form-check {
-        display: flex;
-        flex-direction: column;
-        height: 50px;
-        justify-content: center;
+        @include display(flex);
+        @include flex-direction(column);
+        @include justify-content(center);
+        @media (min-width: 768px) {
+            height: 50px;
+        }
     }
     button {
         height: 50px;

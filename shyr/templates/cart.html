@@ -9,7 +9,7 @@
 </div>
 <div class="container">
     <h2>Order Form</h2>
-    <form id="order" novalidate>
+    <form id="order">
         <div class="row">
             <div class="form-group col-md-4">
                 <label for="name">Name</label>
@@ -123,7 +123,7 @@
 </div>
 
 {% else %}
-<div id="empty-cart">Your cart is empty!</div>
+<div class="text-xs-center">Your cart is empty!</div>
 {% endif %}
 
 {% endblock content %}

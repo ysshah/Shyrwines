@@ -79,9 +79,14 @@ def getCartContext(request):
 
 def getAllWinesContext(request):
     filter_args = {}
+    selected = []
+    not_selected = []
     for field in filter_fields:
         if field in request.GET:
             filter_args[field] = request.GET[field]
+            selected.append((field, request.GET[field]))
+        else:
+            not_selected.append(field)
 
     query = request.GET.get('q')
     if query:
@@ -101,20 +106,17 @@ def getAllWinesContext(request):
             filter_args['price__gte'] = low
         if high:
             filter_args['price__lte'] = high
+        selected.append(('price', request.GET['price']))
 
     wines = Wine.objects.filter(**filter_args)
 
     choices = []
-    for field in filter_fields:
-        field_choices = list(wines.order_by(field).values_list(
-            field, flat=True).distinct())
-        if None in field_choices:
-            field_choices.remove(None)
-        if len(field_choices) == 1:
-            filter_args[field] = field_choices[0]
-        choices.append((field, filter_args.get(field, 'Any'), field_choices))
-    choices.append(('price', request.GET.get('price', 'Any'), price_options))
-    choices.append(('sort', request.GET.get('sort', sort_options[0]), sort_options))
+    for field in not_selected:
+        field_choices = wines.order_by(field).values_list(
+            field, flat=True).distinct().exclude(**{field: None})
+        choices.append((field, field_choices))
+    choices.append(('price', price_options))
+    choices.append(('sort', sort_options))
 
     # Sorting results
     if 'sort' in request.GET:
@@ -133,6 +135,7 @@ def getAllWinesContext(request):
             wines = wines.order_by('price')
         elif request.GET['sort'] == sort_options[5]:
             wines = wines.order_by('-price')
+        selected.append(('sort', request.GET['sort']))
     else:
         wines = sorted(wines,
             key=lambda w: w.name[5:].lower() if w.vintage else w.name.lower())
@@ -151,6 +154,7 @@ def getAllWinesContext(request):
         'page_title': 'All Wines | ',
         'query': query,
         'wines': wines,
+        'selected': selected,
         'choices': choices
     }
     return context
@@ -174,7 +178,7 @@ def add(request):
 def autocomplete(request):
     if request.is_ajax() and request.GET:
         query = request.GET['q'].lower()
-        wines = Wine.objects.filter(name__contains=query)
+        wines = Wine.objects.filter(name__contains=query)[:5]
         for wine in wines:
             i = wine.name.lower().index(query)
             wine.before = wine.name[:i]
@@ -183,7 +187,8 @@ def autocomplete(request):
 
         matched_fields = []
         for field in filter_fields:
-            for match in Wine.objects.values(field).distinct().filter(**{field+'__contains':query}):
+            for match in Wine.objects.values(field).distinct().filter(
+                **{field+'__contains':query})[:1]:
                 i = match[field].lower().index(query)
                 match['fieldname'] = match[field]
                 match['before'] = match[field][:i]
