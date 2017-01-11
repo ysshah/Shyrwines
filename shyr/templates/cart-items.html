@@ -7,14 +7,12 @@
         </div>
         <div class="col-md-2 push-md-5 col-xs-3 text-xs-right remove">
             <form class="remove">
-                {% csrf_token %}
                 <input type="hidden" name="id" value="{{ wine.id }}">
                 <button class="btn" type="submit">Remove</button>
             </form>
         </div>
         <div class="col-md-1 pull-md-2 offset-md-0 col-xs-2 offset-xs-2">
             <form>
-                {% csrf_token %}
                 <input name="id" value="{{ wine.id }}" type="hidden">
                 <input name="quantity" class="form-control cart-quantity" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="{{ wine.quantity }}" autocomplete="off">
             </form>

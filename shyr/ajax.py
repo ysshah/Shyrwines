@@ -2,7 +2,6 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.contrib.staticfiles import finders
-from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -161,14 +160,14 @@ def getAllWinesContext(request):
 
 
 def add(request):
-    if request.is_ajax() and request.POST:
+    if request.is_ajax() and request.GET:
         if 'cart' in request.session:
-            request.session['cart'][request.POST['id']] = request.session['cart'].get(
-                request.POST['id'], 0) + int(request.POST['quantity'])
+            request.session['cart'][request.GET['id']] = request.session['cart'].get(
+                request.GET['id'], 0) + int(request.GET['quantity'])
             request.session.modified = True
         else:
             request.session['cart'] = {
-                request.POST['id']: int(request.POST['quantity'])
+                request.GET['id']: int(request.GET['quantity'])
             }
         return HttpResponse('1', content_type='application/json')
     else:
@@ -207,7 +206,6 @@ def autocomplete(request):
 
 
 def checkout(request):
-    print(request.GET)
     if request.is_ajax() and request.GET:
         context = getCartContext(request)
         context['name'] = request.GET['name']
@@ -240,36 +238,22 @@ def checkout(request):
 
 
 def update(request):
-    if request.is_ajax() and request.POST:
-        quantity = int(request.POST['quantity'])
+    if request.is_ajax() and request.GET:
+        quantity = int(request.GET['quantity'])
         if quantity:
-            request.session['cart'][request.POST['id']] = quantity
+            request.session['cart'][request.GET['id']] = quantity
         else:
-            request.session['cart'].pop(request.POST['id'])
+            request.session['cart'].pop(request.GET['id'])
         request.session.modified = True
-        return HttpResponse('1', content_type='application/json')
+        return render(request, 'cart-items.html', getCartContext(request))
     else:
         raise Http404
 
 
 def remove(request):
-    if request.is_ajax() and request.POST:
-        request.session['cart'].pop(request.POST['id'])
+    if request.is_ajax() and request.GET:
+        request.session['cart'].pop(request.GET['id'])
         request.session.modified = True
-        return HttpResponse('1', content_type='application/json')
-    else:
-        raise Http404
-
-
-def all_wines_items(request):
-    if request.is_ajax():
-        pass
-    else:
-        raise Http404
-
-
-def cart_items(request):
-    if request.is_ajax():
         return render(request, 'cart-items.html', getCartContext(request))
     else:
         raise Http404

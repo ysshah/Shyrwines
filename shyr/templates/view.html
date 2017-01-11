@@ -7,34 +7,34 @@
     <div class="row">
         <div class="col-md-3 text-xs-center">
             <div class="img-wrapper">
-                {% if image_exists %}
+            {% if image_exists %}
                 <img class="img-fluid" src="{% static 'images/wines/' %}{{ wine.sku }}.jpg" alt="{{ wine.name }}">
-                {% else %}
+            {% else %}
                 <img class="img-fluid" src='{% static "images/bottle.svg" %}' alt='{{ wine.name }}'>
-                {% endif %}
+            {% endif %}
             </div>
 
-            {% if factsheet_exists %}
+        {% if factsheet_exists %}
             <div class="text-xs-center">
                 <a class="black-link" target="_blank" href="{% static 'factsheets' %}/{{ wine.sku }}.pdf">Fact Sheet</a>
                 <img class="open" src="{% static 'images/open.svg' %}">
             </div>
-            {% endif %}
+        {% endif %}
         </div>
         <div class="col-md-6">
-            {% if ratings %}
+        {% if ratings %}
             <p class="ratings text-xs-center">
-                {% for rater, rating in ratings %}
+            {% for rater, rating in ratings %}
                 <span>{{ rating }} points</span>
                 <span class="color">{{ rater }}</span><br>
-                {% endfor %}
+            {% endfor %}
             </p>
-            {% endif %}
+        {% endif %}
 
-            {% if wine.description %}
+        {% if wine.description %}
             <div class="color description">Winemaker's Notes</div>
             <p class="description">{{ wine.description }}</p>
-            {% endif %}
+        {% endif %}
 
             <table>
             <tbody>
@@ -42,24 +42,24 @@
                     <td>Country</td>
                     <td class="text-xs-right"><a class="black-link" href="{% url 'all-wines' %}?country={{ wine.country }}">{{ wine.country }}</a></td>
                 </tr>
-                {% if wine.region %}
+            {% if wine.region %}
                 <tr>
                     <td>Region</td>
                     <td class="text-xs-right"><a class="black-link" href="{% url 'all-wines' %}?region={{ wine.region }}">{{ wine.region }}</a></td>
                 </tr>
-                {% endif %}
-                {% if wine.appellation %}
+            {% endif %}
+            {% if wine.appellation %}
                 <tr>
                     <td>Appellation</td>
                     <td class="text-xs-right"><a class="black-link" href="{% url 'all-wines' %}?appellation={{ wine.appellation }}">{{ wine.appellation }}</a></td>
                 </tr>
-                {% endif %}
-                {% if wine.winery %}
+            {% endif %}
+            {% if wine.winery %}
                 <tr>
                     <td>Winery</td>
                     <td class="text-xs-right">{{ wine.winery }}</td>
                 </tr>
-                {% endif %}
+            {% endif %}
                 <tr>
                     <td>Varietal</td>
                     <td class="text-xs-right"><a class="black-link" href="{% url 'all-wines' %}?varietal={{ wine.varietal }}">{{ wine.varietal }}</a></td>
@@ -72,13 +72,12 @@
             </table>
         </div>
         <div class="col-md-3">
+        {% if wine.count == 0 %}
+            <div class="sold-out">Sold Out</div>
+        {% endif %}
             <div class="text-xs-center price">${{ wine.price }}</div>
-            {% if wine.count == 0 %}
-                <div>Sold Out</div>
-            {% endif %}
             <div class="add">
                 <form id="add">
-                    {% csrf_token %}
                     <input type="hidden" name="name" value="{{ wine.name }}">
                     <input type="hidden" name="id" value="{{ wine.id }}">
                     <label>Quantity:</label>
@@ -91,15 +90,15 @@
 </div>
 
 <div class="modal fade" id="add-modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body"></div>
-      <div class="modal-footer">
-        <a href="{% url 'cart' %}" class="btn">Go to Cart</a>
-        <button type="button" class="btn" data-dismiss="modal">Close</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <a href="{% url 'cart' %}" class="btn">Go to Cart</a>
+                <button type="button" class="btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 {% endblock content %}

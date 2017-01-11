@@ -202,12 +202,12 @@ a.panel {
         border: 1px solid white;
         color: white;
         font-size: 20px;
-        @include transform(translate(-50%, -50%));
         left: 50%;
         padding: 5px 10px;
         position: absolute;
         text-align: center;
         top: 50%;
+        @include transform(translate(-50%, -50%));
         z-index: 1;
     }
 }
@@ -302,6 +302,19 @@ div.add {
         width: 100%;
     }
 }
+.sold-out {
+    color: red;
+    font-size: 24px;
+    font-weight: 400;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    @include transform(translate(-50%, -50%)
+                       rotate(-21deg));
+    ~ div {
+        opacity: 0.2;
+    }
+}
 
 /* ALL-WINES */
 .all-wines.container-fluid {
@@ -347,10 +360,10 @@ a.key-collapse {
         border-bottom: 2px solid black;
         border-left: 2px solid black;
         height: 15px;
-        @include transition(0.2s);
         position: relative;
         right: 5px;
         top: 5px;
+        @include transition(0.2s);
         width: 15px;
     }
     &.collapsed div.collapse-notch {
@@ -471,22 +484,6 @@ a.list-wine {
             }
         }
     }
-    .sold-out {
-        color: red;
-        font-size: 24px;
-        font-weight: 400;
-        line-height: 24px;
-        margin-left: -$space-around;
-        margin-top: -12px;
-        position: absolute;
-        text-align: center;
-        top: 50%;
-        @include transform(rotate(-21deg));
-        width: 100%;
-    }
-    .sold-out ~ div {
-        opacity: 0.2;
-    }
 }
 
 /* CART */
@@ -544,6 +541,15 @@ form#order {
     button {
         height: 50px;
         width: 100%;
+    }
+}
+.has-danger {
+    .form-control, .form-control:focus, .form-control:hover {
+        border-color: red;
+        box-shadow: none;
+    }
+    .form-control-label {
+        color: red;
     }
 }
 #thanks-modal div.modal-content {
