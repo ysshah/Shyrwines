@@ -6,5 +6,4 @@ shyr/static/images/wines/*.jpg
 *.min.js
 *.min.css
 *.ttf
-*.css
 *.css.map
