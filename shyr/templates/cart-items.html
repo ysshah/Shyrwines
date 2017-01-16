@@ -1,42 +1,34 @@
 {% if cart %}
-<div id="table">
-    {% for wine in cart %}
-    <div class="cart-wine">
-        <div class="cart-name"><a href="{% url 'view' wine.id %}" class="cart-name-link">{{ wine.name }}</a></div>
-        <div class='cart-quantity'>
-            <form>
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ wine.id }}">
-                <input pattern='\d*' type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57' value='{{ wine.quantity }}' name="quantity">
-            </form>
+<div class="container cart">
+{% for wine in cart %}
+    <div class="row wine">
+        <div class="col-md-5 col-9 name">
+            <a class="black-link" href="{% url 'view' wine.id %}">{{ wine.name }}</a>
         </div>
-        <div class='cart-x'>&times;</div>
-        <div class='cart-unit-price'>${{ wine.price }}</div>
-        <div class='cart-equals'>=</div>
-        <div class='cart-unit-totalprice'>${{ wine.total_price }}</div>
-        <div class='cart-remove'>
+        <div class="col-md-2 push-md-5 col-3 text-right remove">
             <form class="remove">
-                {% csrf_token %}
                 <input type="hidden" name="id" value="{{ wine.id }}">
-                <button type="submit" class='remove'>Remove</button>
+                <button class="btn" type="submit">Remove</button>
             </form>
         </div>
+        <div class="col-md-1 pull-md-2 offset-md-0 col-2 offset-2">
+            <form>
+                <input name="id" value="{{ wine.id }}" type="hidden">
+                <input name="quantity" class="form-control cart-quantity" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="{{ wine.quantity }}" autocomplete="off">
+            </form>
+        </div>
+        <div class="pull-md-2 col-1 text-center">&times;</div>
+        <div class="pull-md-2 col-md-1 col-3 text-right">${{ wine.price }}</div>
+        <div class="pull-md-2 col-1 text-center">=</div>
+        <div class="pull-md-2 col-md-1 col-3 text-right">${{ wine.total_price }}</div>
     </div>
-    {% endfor %}
-    <div class='cart-totals-row'>
-        <div class='cart-totals-titles'>Subtotal</div>
-        <div class='cart-equals'>=</div>
-        <div id='subtotal' class='cart-totals'>${{ subtotal|floatformat:2 }}</div>
+{% endfor %}
+{% for key, value in totals %}
+    <div class="row">
+        <div class="col-8 text-right">{{ key }}</div>
+        <div class="col-1 text-center">=</div>
+        <div class="col-md-1 col-3 text-right">${{ value }}</div>
     </div>
-    <div class='cart-totals-row'>
-        <div class='cart-totals-titles'>Estimated Tax</div>
-        <div class='cart-equals'>=</div>
-        <div id='tax' class='cart-totals'>${{ tax|floatformat:2 }}</div>
-    </div>
-    <div class='cart-totals-row' style='font-size:20px'>
-        <div class='cart-totals-titles'>Total</div>
-        <div class='cart-equals'>=</div>
-        <div id='total' class='cart-totals'>${{ total|floatformat:2 }}</div>
-    </div>
+{% endfor %}
 </div>
 {% endif %}

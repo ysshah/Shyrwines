@@ -3,69 +3,54 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet" type="text/css" />
-        {% comment %}
-            <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
-        {% endcomment %}
-        <script type="text/javascript" src="{% static 'jquery-1.12.4.min.js' %}"></script>
-        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
-        <script type="text/javascript" src="{% static 'script.js' %}"></script>
-        <link rel="icon" href="{% static 'images/logo-bottle.png' %}" />
-        <meta name="viewport" content="width=device-width" />
-        <meta name="google" value="notranslate" />
-        <link rel="search" type="application/opensearchdescription+xml" title="Shyr Wines" href="{% static 'opensearch.xml' %}" />
-        <meta name="google-site-verification" content="HNUubO2s2NhukmIDIZmNIprxQcz8jmNu6GvqgYiYygs" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="google" value="notranslate">
+        <link rel="search" type="application/opensearchdescription+xml" title="Shyr Wines" href="{% static 'opensearch.xml' %}">
+        <meta name="google-site-verification" content="HNUubO2s2NhukmIDIZmNIprxQcz8jmNu6GvqgYiYygs">
+
+        <link rel="icon" href="{% static 'images/logo-bottle.png' %}">
         <title>{{ page_title }}Shyr Wines</title>
+
+        <link href="//fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'style.css' %}">
     </head>
     <body>
-        <nav>
-            <a id="nav-logo" href="{% url 'index' %}">
-                <img src="{% static 'images/logo.svg' %}" alt="Shyr Wines Logo" />
-            </a>
-            <div class="nav-item"><a href="{% url 'about' %}">ABOUT</a></div>
-            <div class="nav-item"><a href="{% url 'contact-us' %}">CONTACT US</a></div>
-            <div class="nav-item">
-                <a href="{% url 'cart' %}">CART</a>
-                <div id="popover-content">
-                    <div id="popover-arrow"></div>
-                    <div id="popover-box">
-                        <div id="wine-added">
-                            <img id="wine-added-pic" src="{% static 'images/bottle.svg' %}">
-                            <div id="center">
-                                <div id="wine-added-name"></div>
-                                <div id="added-to-cart">added to cart</div>
-                            </div>
-                        </div>
-                    </div>
+        <nav class="navbar">
+            <div class="container">
+                <div class="row">
+                    <a class="col-lg-2 col-md-3 col-sm-4 text-sm-left col-12 text-center" href="{% url 'index' %}">
+                        <img height="75px" src="{% static 'images/logo.svg' %}" alt="Shyr Wines Logo" />
+                    </a>
+                    <form class="col-lg-4 col-md-9 push-lg-6 col-sm-8 col-12" action="{% url 'all-wines' %}">
+                        <input class="form-control" type="text" placeholder="Search by wine name, keyword..." value="{{ query|default_if_none:'' }}" name="q" autocomplete="off" id="nav-search">
+                        <div class="list-group" id="auto-container"></div>
+                    </form>
+                    <a class="col-lg-2 pull-lg-4 col-4 text-center" href="{% url 'about' %}">ABOUT</a>
+                    <a class="col-lg-2 pull-lg-4 col-4 text-center" href="{% url 'contact-us' %}">CONTACT</a>
+                    <a id="nav-cart" class="col-lg-2 pull-lg-4 col-4 text-center" href="{% url 'cart' %}" data-container="body" data-toggle="popover" data-placement="bottom" data-offset="15px 0">CART</a>
                 </div>
             </div>
-            <form class="search" method="get" action="{% url 'all-wines' %}">
-                <input autocomplete="off" name="q" id="nav-search" type="text" placeholder="Search by wine name, keyword..." value='{{ query|default_if_none:"" }}' />
-                <div id="mag-circle"></div>
-                <div id="mag-handle"></div>
-                <div id="auto-container"></div>
-            </form>
-            <div id="nav-facebook" class="nav-social">
-                <a class="title" href="https://www.facebook.com/shyrwines" target="_blank">FACEBOOK PAGE</a>
-                <div class="fb-like widget" data-href="https://www.facebook.com/shyrwines" data-layout="button" data-action="like" data-show-faces="true" data-share="false"></div>
-            </div>
         </nav>
-        <div id="nav-border"></div>
-        <div id="dimmer"></div>
 
         {% block content %}{% endblock content %}
 
         <footer>
-            <div class="footer-item">&copy; 2014 - 2016 Shyr Wines</div>
-            <div class="footer-dot first">&middot;</div>
-            <a class="footer-item" href="{% url 'terms-of-service' %}">TERMS OF SERVICE</a>
-            <div class="footer-dot">&middot;</div>
-            <a class="footer-item" href="{% url 'privacy-policy' %}">PRIVACY POLICY</a>
+            <div class="container text-center">
+                <span>&copy; 2014 - 2017 Shyr Wines</span>
+                <span class="hidden-down">&middot;</span>
+                <br class="hidden-sm-up">
+                <a class="black-link" href="{% url 'terms-of-service' %}">TERMS OF SERVICE</a>
+                <span>&middot;</span>
+                <a class="black-link" href="{% url 'privacy-policy' %}">PRIVACY POLICY</a>
+            </div>
         </footer>
 
-        {% comment %}
-        <div id="fb-root"></div>
-        <script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0];if (d.getElementById(id)) return;js = d.createElement(s); js.id = id;js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>
-        {% endcomment %}
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script src="{% static 'jquery.validate.min.js' %}"></script>
+        <script src="{% static 'script.js' %}"></script>
     </body>
 </html>

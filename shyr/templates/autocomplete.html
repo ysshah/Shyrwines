@@ -1,11 +1,11 @@
 {% for wine in wines %}
-    <a href='{% url "view" wine.id %}' class='auto-item'>
-        <div class='center'>{{ wine.before }}<div class='match'>{{ wine.match }}</div>{{ wine.after }}</div>
+    <a href="{% url 'view' wine.id %}" class="list-group-item list-group-item-action">
+        {{ wine.before }}<span class="match">{{ wine.match }}</span>{{ wine.after }}
     </a>
 {% endfor %}
 
 {% for field, match in matched_fields %}
-    <a href='/all-wines?{{ field }}={{ match.fieldname }}' class='auto-item'>
-        <div class='center'>{{ field|title }}: {{ match.before }}<div class='match'>{{ match.match }}</div>{{ match.after }}</div>
+    <a href='/all-wines?{{ field }}={{ match.fieldname }}' class="list-group-item list-group-item-action">
+        <span class="field">{{ field|title }}</span>: {{ match.before }}<span class="match">{{ match.match }}</span>{{ match.after }}
     </a>
 {% endfor %}

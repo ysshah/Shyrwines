@@ -1,31 +1,23 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<div id="content">
-    <div class="header">Browse by Varietal</div>
-    <div class="panel-container" id="varietals">
-        {% for panel in varietal_panels %}
-        <a id='{{ panel.1 }}' class='panel' href="{% url 'all-wines' %}{{ panel.0 }}">
-            <div class='panel-text-wrapper'>
-                <div class='panel-text'>{{ panel.1 }}</div>
-            </div>
-            <img src='../static/images/{{ panel.2 }}' />
-            <div class='panel-dimmer'></div>
+<div class="container">
+{% for category, panels in categories %}
+    <h1 class="page-title text-md-left text-center">Popular {{ category }}</h1>
+    <div class="row">
+    {% for link, text, image in panels %}
+        <a class="col-lg-3 col-md-6 panel" href="{% url 'all-wines' %}{{ link }}">
+            <div>{{ text }}</div>
+            <img src="{% static 'images' %}/{{ image }}" class="img-fluid">
         </a>
-        {% endfor %}
+    {% endfor %}
     </div>
+{% endfor %}
 
-    <div class="header">Browse by Country</div>
-    <div class="panel-container" id="countries">
-    {% for panel in country_panels %}
-        <a id='{{ panel.1 }}' class='panel' href="{% url 'all-wines' %}{{ panel.0 }}">
-            <div class='panel-text-wrapper'>
-                <div class='panel-text'>{{ panel.1 }}</div>
-            </div>
-            <img src='../static/images/{{ panel.2 }}' />
-            <div class='panel-dimmer'></div>
-        </a>
-        {% endfor %}
-    </div>
+    <h1 class="page-title text-md-left text-center">
+        <a class="black-link" href="{% url 'all-wines' %}">Browse all wines...</a>
+    </h1>
+
 </div>
 {% endblock content %}

@@ -3,31 +3,23 @@ Email: {{ email }}<br>
 Address: {{ address }}, {{ city }}, {{ state }} {{ zipcode }}<br><br>
 
 <table>
-    {% for wine in cart %}
+{% for wine in cart %}
     <tr>
-        <td style='padding-right:10px;'>{{ wine.name }}</td>
-        <td style='padding-right:10px;'>{{ wine.quantity }}</td>
-        <td style='padding-right:10px;'>x</td>
-        <td style='padding-right:10px;'>{{ wine.price }}</td>
-        <td style='padding-right:10px;'>=</td>
-        <td style='padding-right:10px; text-align:right;'>{{ wine.total_price }}</td>
+        <td style="padding-right:10px;">{{ wine.name }}</td>
+        <td style="padding-right:10px;">{{ wine.quantity }}</td>
+        <td style="padding-right:10px;">x</td>
+        <td style="padding-right:10px;">{{ wine.price }}</td>
+        <td style="padding-right:10px;">=</td>
+        <td style="padding-right:10px; text-align:right;">{{ wine.total_price }}</td>
     </tr>
-    {% endfor %}
+{% endfor %}
+{% for key, value in totals %}
     <tr>
-        <td style='padding-right:10px; text-align:right; colspan="4";'>Subtotal</td>
-        <td style='padding-right:10px;'>=</td>
-        <td style='padding-right:10px; text-align:right;'>{{ subtotal }}</td>
+        <td style="padding-right:10px; text-align:right;" colspan="4">{{ key }}</td>
+        <td style="padding-right:10px;">=</td>
+        <td style="padding-right:10px; text-align:right;">{{ value }}</td>
     </tr>
-    <tr>
-        <td style='padding-right:10px; text-align:right; colspan="4";'>Tax</td>
-        <td style='padding-right:10px;'>=</td>
-        <td style='padding-right:10px; text-align:right;'>{{ tax }}</td>
-    </tr>
-    <tr>
-        <td style='padding-right:10px; text-align:right; colspan="4";'>Total</td>
-        <td style='padding-right:10px;'>=</td>
-        <td style='padding-right:10px; text-align:right;'>{{ total }}</td>
-    </tr>
+{% endfor %}
 </table>
 <br>
 Comment: {{ comment }}

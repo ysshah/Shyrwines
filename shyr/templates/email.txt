@@ -6,8 +6,8 @@ Address: {{ address }}, {{ city }}, {{ state }} {{ zipcode }}
 {{ wine.name }}: {{ wine.quantity }} x {{ wine.price }} = {{ wine.total_price }}
 {% endfor %}
 
-Subtotal = {{ subtotal }}
-Tax = {{ tax }}
-Total = {{ total }}
+{% for key, value in totals %}
+{{ key }} = {{ value }}
+{% endfor %}
 
 Comment: {{ comment }}

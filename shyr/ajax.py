@@ -1,9 +1,8 @@
 import json
+from decimal import Decimal
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.contrib.staticfiles import finders
-from django.template.loader import render_to_string
-from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -67,9 +66,11 @@ def getCartContext(request):
             wine.total_price = wine.quantity * wine.price
             subtotal += float(wine.total_price)
         context['cart'] = wines
-        context['subtotal'] = subtotal
-        context['tax'] = subtotal * 0.0875
-        context['total'] = subtotal * 1.0875
+        context['totals'] = [
+            ('Subtotal', round(Decimal(str(subtotal)), 2)),
+            ('Estimated Tax', round(Decimal(str(subtotal * 0.0875)), 2)),
+            ('Total', round(Decimal(str(subtotal * 1.0875)), 2))
+        ]
     else:
         context['cart'] = None
 
@@ -78,9 +79,14 @@ def getCartContext(request):
 
 def getAllWinesContext(request):
     filter_args = {}
+    selected = []
+    not_selected = []
     for field in filter_fields:
         if field in request.GET:
             filter_args[field] = request.GET[field]
+            selected.append((field, request.GET[field]))
+        else:
+            not_selected.append(field)
 
     query = request.GET.get('q')
     if query:
@@ -100,36 +106,17 @@ def getAllWinesContext(request):
             filter_args['price__gte'] = low
         if high:
             filter_args['price__lte'] = high
+        selected.append(('price', request.GET['price']))
 
     wines = Wine.objects.filter(**filter_args)
 
     choices = []
-    for field in filter_fields:
-        field_choices = list(wines.order_by(field).values_list(
-            field, flat=True).distinct())
-        if None in field_choices:
-            field_choices.remove(None)
-        if len(field_choices) == 1:
-            filter_args[field] = field_choices[0]
-        # else:
-        #     field_choices.insert(0, 'Any')
-        if filter_args.get(field) in field_choices:
-            offset = (field_choices.index(filter_args[field]) + 1) * -51
-        else:
-            offset = 0
-        choices.append((field, filter_args.get(field, 'Any'), field_choices, offset))
-
-    if request.GET.get('price') in price_options:
-        offset = (price_options.index(request.GET['price']) + 1) * -51
-    else:
-        offset = 0
-    choices.append(('price', request.GET.get('price', 'Any'), price_options, offset))
-
-    if request.GET.get('sort') in sort_options:
-        offset = sort_options.index(request.GET['sort']) * -51
-    else:
-        offset = 0
-    choices.append(('sort', request.GET.get('sort', sort_options[0]), sort_options, offset))
+    for field in not_selected:
+        field_choices = wines.order_by(field).values_list(
+            field, flat=True).distinct().exclude(**{field: None})
+        choices.append((field, field_choices))
+    choices.append(('price', price_options))
+    choices.append(('sort', sort_options))
 
     # Sorting results
     if 'sort' in request.GET:
@@ -148,6 +135,7 @@ def getAllWinesContext(request):
             wines = wines.order_by('price')
         elif request.GET['sort'] == sort_options[5]:
             wines = wines.order_by('-price')
+        selected.append(('sort', request.GET['sort']))
     else:
         wines = sorted(wines,
             key=lambda w: w.name[5:].lower() if w.vintage else w.name.lower())
@@ -166,20 +154,21 @@ def getAllWinesContext(request):
         'page_title': 'All Wines | ',
         'query': query,
         'wines': wines,
+        'selected': selected,
         'choices': choices
     }
     return context
 
 
 def add(request):
-    if request.is_ajax() and request.POST:
+    if request.is_ajax() and request.GET:
         if 'cart' in request.session:
-            request.session['cart'][request.POST['id']] = request.session['cart'].get(
-                request.POST['id'], 0) + int(request.POST['quantity'])
+            request.session['cart'][request.GET['id']] = request.session['cart'].get(
+                request.GET['id'], 0) + int(request.GET['quantity'])
             request.session.modified = True
         else:
             request.session['cart'] = {
-                request.POST['id']: int(request.POST['quantity'])
+                request.GET['id']: int(request.GET['quantity'])
             }
         return HttpResponse('1', content_type='application/json')
     else:
@@ -189,7 +178,7 @@ def add(request):
 def autocomplete(request):
     if request.is_ajax() and request.GET:
         query = request.GET['q'].lower()
-        wines = Wine.objects.filter(name__contains=query)
+        wines = Wine.objects.filter(name__contains=query)[:5]
         for wine in wines:
             i = wine.name.lower().index(query)
             wine.before = wine.name[:i]
@@ -198,7 +187,8 @@ def autocomplete(request):
 
         matched_fields = []
         for field in filter_fields:
-            for match in Wine.objects.values(field).distinct().filter(**{field+'__contains':query}):
+            for match in Wine.objects.values(field).distinct().filter(
+                **{field+'__contains':query})[:1]:
                 i = match[field].lower().index(query)
                 match['fieldname'] = match[field]
                 match['before'] = match[field][:i]
@@ -249,52 +239,22 @@ def checkout(request):
 
 
 def update(request):
-    if request.is_ajax() and request.POST:
-        quantity = int(request.POST['quantity'])
+    if request.is_ajax() and request.GET:
+        quantity = int(request.GET['quantity'])
         if quantity:
-            request.session['cart'][request.POST['id']] = quantity
+            request.session['cart'][request.GET['id']] = quantity
         else:
-            request.session['cart'].pop(request.POST['id'])
+            request.session['cart'].pop(request.GET['id'])
         request.session.modified = True
-        return HttpResponse('1', content_type='application/json')
+        return render(request, 'cart-items.html', getCartContext(request))
     else:
         raise Http404
 
 
 def remove(request):
-    if request.is_ajax() and request.POST:
-        request.session['cart'].pop(request.POST['id'])
+    if request.is_ajax() and request.GET:
+        request.session['cart'].pop(request.GET['id'])
         request.session.modified = True
-        return HttpResponse('1', content_type='application/json')
-    else:
-        raise Http404
-
-
-def filter(request):
-    if request.is_ajax() and request.POST:
-        params = request.POST.copy()
-        popList = [key for key in params if 'Any' in params[key]] + ['csrfmiddlewaretoken']
-        for key in popList:
-            params.pop(key)
-        data = json.dumps({
-            'url': params.urlencode(),
-            'html': render_to_string('all-wines-items.html',
-                getAllWinesContext(params), request)
-        })
-        return HttpResponse(data, content_type='application/json')
-    else:
-        raise Http404
-
-
-def all_wines_items(request):
-    if request.is_ajax():
-        pass
-    else:
-        raise Http404
-
-
-def cart_items(request):
-    if request.is_ajax():
         return render(request, 'cart-items.html', getCartContext(request))
     else:
         raise Http404

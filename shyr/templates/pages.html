@@ -1,0 +1,23 @@
+{% load shyr_tags %}
+
+<span class="float-right pages">
+    {% if wines.number != 1 %}
+    <a class="btn" href="?{% url_page request 1 %}">1</a>
+    {% endif %}
+    {% if wines.number > 3 %}
+    <span class="page-dots">&middot;&middot;&middot;</span>
+    {% endif %}
+    {% if wines.has_previous and wines.previous_page_number != 1 %}
+    <a class="btn" href="?{% url_page request wines.previous_page_number %}">{{ wines.previous_page_number }}</a>
+    {% endif %}
+    <a class="btn selected">{{ wines.number }}</a>
+    {% if wines.has_next and wines.next_page_number != wines.paginator.num_pages %}
+    <a class="btn" href="?{% url_page request wines.next_page_number %}">{{ wines.next_page_number }}</a>
+    {% endif %}
+    {% if wines.number < wines.paginator.num_pages|add:"-2" %}
+    <span class="page-dots">&middot;&middot;&middot;</span>
+    {% endif %}
+    {% if wines.number != wines.paginator.num_pages %}
+    <a class="btn" href="?{% url_page request wines.paginator.num_pages %}">{{ wines.paginator.num_pages }}</a>
+    {% endif %}
+</span>

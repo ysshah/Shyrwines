@@ -47,9 +47,12 @@ def index(request):
         ("?country=Spain", "Spanish", "spain.jpg"),
         ("?country=France", "French", "france.jpg")
     ]
+    categories = [
+        ('Varietals', varietal_panels),
+        ('Countries', country_panels)
+    ]
     context = {
-        'varietal_panels': varietal_panels,
-        'country_panels': country_panels
+        'categories': categories
     }
     return render(request, 'index.html', context)
 

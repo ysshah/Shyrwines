@@ -2,87 +2,104 @@
 {% load static %}
 
 {% block content %}
-<div id="view-content">
-    <div id="view-title">{{ wine.name }}</div>
-    <div id="left-col">
-        <div id="view-pic-wrapper">
+<div class="container view">
+    <h1 class="page-title text-center">{{ wine.name }}</h1>
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <div class="img-wrapper">
             {% if image_exists %}
-            <img id='view-pic' src='{% static "images/wines/" %}{{ wine.sku }}.jpg' alt='{{ wine.name }}'>
+                <img class="img-fluid" src="{% static 'images/wines/' %}{{ wine.sku }}.jpg" alt="{{ wine.name }}">
             {% else %}
-            <img id='view-default-pic' src='{% static "images/bottle.svg" %}' alt='{{ wine.name }}'>
+                <img class="img-fluid" src='{% static "images/bottle.svg" %}' alt='{{ wine.name }}'>
             {% endif %}
-        </div>
-        {% if factsheet_exists %}
-        <div id="factsheet">
-            <a target='_blank' href='{% static "factsheets" %}/{{ wine.sku }}.pdf'>Fact Sheet</a>
-            <img src='{% static "images/open.svg" %}'>
-        </div>
-        {% endif %}
-    </div>
-    <div id="view-info-wrapper">
+            </div>
 
-        <div id="view-ratings">
-        {% for rater, rating in ratings %}
-            <div class='view-rating'>{{ rating }} points</div>
-            <div class='view-rater'>{{ rater }}</div><br>
-        {% endfor %}
+        {% if factsheet_exists %}
+            <div class="text-center">
+                <a class="black-link" target="_blank" href="{% static 'factsheets' %}/{{ wine.sku }}.pdf">Fact Sheet</a>
+                <img class="open" src="{% static 'images/open.svg' %}">
+            </div>
+        {% endif %}
         </div>
+        <div class="col-md-6">
+        {% if ratings %}
+            <p class="ratings text-center">
+            {% for rater, rating in ratings %}
+                <span>{{ rating }} points</span>
+                <span class="color">{{ rater }}</span><br>
+            {% endfor %}
+            </p>
+        {% endif %}
 
         {% if wine.description %}
-        <div id="view-description-title" class="view-info-title">Winemaker's Notes</div>
-        <div class="view-info" id="view-description">{{ wine.description }}</div>
+            <div class="color description">Winemaker's Notes</div>
+            <p class="description">{{ wine.description }}</p>
         {% endif %}
 
-        <div class="view-subinfo">
-            <div class="view-info-title">Country</div>
-            <a href="/all-wines?country={{ wine.country }}" class="view-info" id="view-country">{{ wine.country }}</a>
+            <table>
+            <tbody>
+                <tr>
+                    <td>Country</td>
+                    <td class="text-right"><a class="black-link" href="{% url 'all-wines' %}?country={{ wine.country }}">{{ wine.country }}</a></td>
+                </tr>
+            {% if wine.region %}
+                <tr>
+                    <td>Region</td>
+                    <td class="text-right"><a class="black-link" href="{% url 'all-wines' %}?region={{ wine.region }}">{{ wine.region }}</a></td>
+                </tr>
+            {% endif %}
+            {% if wine.appellation %}
+                <tr>
+                    <td>Appellation</td>
+                    <td class="text-right"><a class="black-link" href="{% url 'all-wines' %}?appellation={{ wine.appellation }}">{{ wine.appellation }}</a></td>
+                </tr>
+            {% endif %}
+            {% if wine.winery %}
+                <tr>
+                    <td>Winery</td>
+                    <td class="text-right">{{ wine.winery }}</td>
+                </tr>
+            {% endif %}
+                <tr>
+                    <td>Varietal</td>
+                    <td class="text-right"><a class="black-link" href="{% url 'all-wines' %}?varietal={{ wine.varietal }}">{{ wine.varietal }}</a></td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td class="text-right">{{ wine.wine_type }}</td>
+                </tr>
+            </tbody>
+            </table>
         </div>
-
-        {% if wine.region %}
-        <div class="view-subinfo">
-            <div class="view-info-title">Region</div>
-            <a class="view-info" id="view-region" href="/all-wines?region={{ wine.region }}">{{ wine.region }}</a>
-        </div>
-        {% endif %}
-
-        {% if wine.appellation %}
-        <div class="view-subinfo">
-            <div class="view-info-title">Appellation</div>
-            <a class="view-info" id="view-appellation" href="/all-wines?appellation={{ wine.appellation }}">{{ wine.appellation }}</a>
-        </div>
-        {% endif %}
-
-        {% if wine.winery %}
-        <div class="view-subinfo">
-            <div class="view-info-title">Winery</div>
-            <div class="view-info" id="view-winery">{{ wine.winery }}</div>
-        </div>
-        {% endif %}
-
-        <div class="view-subinfo">
-            <div class="view-info-title">Varietal</div>
-            <a class="view-info" id="view-varietal" href="/all-wines?varietal={{ wine.varietal }}">{{ wine.varietal }}</a>
-        </div>
-        <div class="view-subinfo">
-            <div class="view-info-title">Type</div>
-            <div class="view-info" id="view-type">{{ wine.wine_type }}</div>
-        </div>
-    </div>
-    <div id="view-purchase-wrapper">
-        <div id="view-price">${{ wine.price }}</div>
-        {% if wine.count == 0 %}
-            <div id='view-outofstock'><div>Sold Out</div></div>
-        {% endif %}
-        <div id='add-container'>
-            <form class="add">
-                {% csrf_token %}
-                <input type="hidden" name="name" value="{{ wine.name }}">
-                <input type="hidden" name="id" value="{{ wine.id }}">
-                <div id="view-quantity-label">Quantity:</div>
-                <input pattern="\d*" onkeypress='return event.charCode >= 48 && event.charCode <= 57' id='view-quantity' value='1' type="text" name="quantity">
-                <button type="submit" class="view-add">Add to Cart</button>
-            </form>
+        <div class="col-md-3">
+            <div class="text-center price">${{ wine.price }}</div>
+            <div class="add">
+            {% if wine.count == 0 %}
+                <div class="sold-out">Sold Out</div>
+                <div class="sold-out-blocker"></div>
+            {% endif %}
+                <form id="add">
+                    <input type="hidden" name="name" value="{{ wine.name }}">
+                    <input type="hidden" name="id" value="{{ wine.id }}">
+                    <label>Quantity:</label>
+                    <input class="form-control" value='1' type="number" name="quantity" autocomplete="off">
+                    <button class="btn" type="submit">Add to Cart</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="add-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <a href="{% url 'cart' %}" class="btn">Go to Cart</a>
+                <button type="button" class="btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}

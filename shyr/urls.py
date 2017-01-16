@@ -11,12 +11,9 @@ urlpatterns = [
     url(r'^terms-of-service/$', views.terms_of_service, name='terms-of-service'),
     url(r'^view/(?P<wine_id>\d+)/$', views.view, name='view'),
 
-    url(r'^cart-items/$', ajax.cart_items, name='cart-items'),
-
     url(r'^add/$', ajax.add, name='add'),
     url(r'^autocomplete/$', ajax.autocomplete, name='autocomplete'),
     url(r'^checkout/$', ajax.checkout, name='checkout'),
     url(r'^update/$', ajax.update, name='update'),
-    url(r'^remove/$', ajax.remove, name='remove'),
-    url(r'^filter/$', ajax.filter, name='filter')
+    url(r'^remove/$', ajax.remove, name='remove')
 ]
