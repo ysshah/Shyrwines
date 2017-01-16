@@ -3,9 +3,9 @@
 
 {% block content %}
 <div class="container view">
-    <h1 class="page-title text-xs-center">{{ wine.name }}</h1>
+    <h1 class="page-title text-center">{{ wine.name }}</h1>
     <div class="row">
-        <div class="col-md-3 text-xs-center">
+        <div class="col-md-3 text-center">
             <div class="img-wrapper">
             {% if image_exists %}
                 <img class="img-fluid" src="{% static 'images/wines/' %}{{ wine.sku }}.jpg" alt="{{ wine.name }}">
@@ -15,7 +15,7 @@
             </div>
 
         {% if factsheet_exists %}
-            <div class="text-xs-center">
+            <div class="text-center">
                 <a class="black-link" target="_blank" href="{% static 'factsheets' %}/{{ wine.sku }}.pdf">Fact Sheet</a>
                 <img class="open" src="{% static 'images/open.svg' %}">
             </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-md-6">
         {% if ratings %}
-            <p class="ratings text-xs-center">
+            <p class="ratings text-center">
             {% for rater, rating in ratings %}
                 <span>{{ rating }} points</span>
                 <span class="color">{{ rater }}</span><br>
@@ -40,43 +40,44 @@
             <tbody>
                 <tr>
                     <td>Country</td>
-                    <td class="text-xs-right"><a class="black-link" href="{% url 'all-wines' %}?country={{ wine.country }}">{{ wine.country }}</a></td>
+                    <td class="text-right"><a class="black-link" href="{% url 'all-wines' %}?country={{ wine.country }}">{{ wine.country }}</a></td>
                 </tr>
             {% if wine.region %}
                 <tr>
                     <td>Region</td>
-                    <td class="text-xs-right"><a class="black-link" href="{% url 'all-wines' %}?region={{ wine.region }}">{{ wine.region }}</a></td>
+                    <td class="text-right"><a class="black-link" href="{% url 'all-wines' %}?region={{ wine.region }}">{{ wine.region }}</a></td>
                 </tr>
             {% endif %}
             {% if wine.appellation %}
                 <tr>
                     <td>Appellation</td>
-                    <td class="text-xs-right"><a class="black-link" href="{% url 'all-wines' %}?appellation={{ wine.appellation }}">{{ wine.appellation }}</a></td>
+                    <td class="text-right"><a class="black-link" href="{% url 'all-wines' %}?appellation={{ wine.appellation }}">{{ wine.appellation }}</a></td>
                 </tr>
             {% endif %}
             {% if wine.winery %}
                 <tr>
                     <td>Winery</td>
-                    <td class="text-xs-right">{{ wine.winery }}</td>
+                    <td class="text-right">{{ wine.winery }}</td>
                 </tr>
             {% endif %}
                 <tr>
                     <td>Varietal</td>
-                    <td class="text-xs-right"><a class="black-link" href="{% url 'all-wines' %}?varietal={{ wine.varietal }}">{{ wine.varietal }}</a></td>
+                    <td class="text-right"><a class="black-link" href="{% url 'all-wines' %}?varietal={{ wine.varietal }}">{{ wine.varietal }}</a></td>
                 </tr>
                 <tr>
                     <td>Type</td>
-                    <td class="text-xs-right">{{ wine.wine_type }}</td>
+                    <td class="text-right">{{ wine.wine_type }}</td>
                 </tr>
             </tbody>
             </table>
         </div>
         <div class="col-md-3">
-        {% if wine.count == 0 %}
-            <div class="sold-out">Sold Out</div>
-        {% endif %}
-            <div class="text-xs-center price">${{ wine.price }}</div>
+            <div class="text-center price">${{ wine.price }}</div>
             <div class="add">
+            {% if wine.count == 0 %}
+                <div class="sold-out">Sold Out</div>
+                <div class="sold-out-blocker"></div>
+            {% endif %}
                 <form id="add">
                     <input type="hidden" name="name" value="{{ wine.name }}">
                     <input type="hidden" name="id" value="{{ wine.id }}">

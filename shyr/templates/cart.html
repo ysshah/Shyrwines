@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<h1 class="page-title text-xs-center">Cart</h1>
+<h1 class="page-title text-center">Cart</h1>
 
 {% if cart %}
 <div class="cart-wrapper">
@@ -122,8 +123,12 @@
     </div>
 </div>
 
+<div class="modal fade" id="loading-modal">
+    <img src="{% static 'images/logo-bottle.png' %}">
+</div>
+
 {% else %}
-<div class="text-xs-center">Your cart is empty!</div>
+<div class="text-center">Your cart is empty!</div>
 {% endif %}
 
 {% endblock content %}

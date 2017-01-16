@@ -38,42 +38,48 @@
             <div class="container">
                 <div class="row clearfix pages-row">
                 {% if query %}
-                    <span class="float-xs-left results">Results for "<span>{{ query }}</span>"</span>
+                    <span class="float-left results">Results for "<span>{{ query }}</span>"</span>
                 {% endif %}
-                {% if wines|length != 0 %}
+                {% if wines|length > 0 %}
                     {% include "pages.html" %}
                 {% endif %}
                 </div>
                 <div class="row all-wines">
                 {% for wine in wines %}
-                    <a class="col-xl-4 col-lg-6 col-xs-12 list-wine" href="{% url 'view' wine.id %}">
-                    {% if wine.count == 0 %}
-                        <div class="sold-out">Sold Out</div>
-                    {% endif %}
+                    <a class="col-xl-4 col-lg-6 col-12 list-wine" href="{% url 'view' wine.id %}">
+                        <div class="container">
+                            <div class="row">
+                            {% if wine.count == 0 %}
+                                <div class="sold-out">Sold Out</div>
+                            {% endif %}
 
-                        <div class="col-xs-2 list-pic">
-                        {% if wine.image_exists %}
-                            <img src="{% static 'images/wines/' %}{{ wine.sku }}.jpg" alt="{% static 'images/bottle.svg' %}" />
-                        {% else %}
-                            <img src="{% static 'images/bottle.svg' %}" alt="{{ wine.name }}" />
-                        {% endif %}
-                        </div>
+                                <div class="col-2 list-pic">
+                                {% if wine.image_exists %}
+                                    <img src="{% static 'images/wines/' %}{{ wine.sku }}.jpg" alt="{% static 'images/bottle.svg' %}" />
+                                {% else %}
+                                    <img src="{% static 'images/bottle.svg' %}" alt="{{ wine.name }}" />
+                                {% endif %}
+                                </div>
 
-                        <div class="col-xs-10 list-info">
-                            <div class="name">{{ wine.name }}</div>
+                                <div class="col-10 list-info">
+                                    <div class="name">{{ wine.name }}</div>
 
-                        {% if wine.winery %}
-                            <span class="color">Winery</span>
-                            <span>{{ wine.winery }}</span>
-                        {% endif %}
+                                {% if wine.winery %}
+                                    <span class="color">Winery</span>
+                                    <span>{{ wine.winery }}</span>
+                                {% endif %}
 
-                            <div class="ratings">
-                            {% for rater, rating in wine.ratings %}
-                                <span class="color">{{ rater }}</span>
-                                <span>{{ rating }}</span>
-                            {% endfor %}
+                                {% if wine.ratings|length > 0 %}
+                                    <div class="ratings">
+                                    {% for rater, rating in wine.ratings %}
+                                        <span class="color">{{ rater }}</span>
+                                        <span>{{ rating }}</span>
+                                    {% endfor %}
+                                    </div>
+                                {% endif %}
+                                    <div class="list-price">${{ wine.price }}</div>
+                                </div>
                             </div>
-                            <div class="list-price">${{ wine.price }}</div>
                         </div>
                     </a>
                 {% empty %}

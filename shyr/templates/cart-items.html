@@ -1,34 +1,34 @@
 {% if cart %}
 <div class="container cart">
-    {% for wine in cart %}
+{% for wine in cart %}
     <div class="row wine">
-        <div class="col-md-5 col-xs-9 name">
+        <div class="col-md-5 col-9 name">
             <a class="black-link" href="{% url 'view' wine.id %}">{{ wine.name }}</a>
         </div>
-        <div class="col-md-2 push-md-5 col-xs-3 text-xs-right remove">
+        <div class="col-md-2 push-md-5 col-3 text-right remove">
             <form class="remove">
                 <input type="hidden" name="id" value="{{ wine.id }}">
                 <button class="btn" type="submit">Remove</button>
             </form>
         </div>
-        <div class="col-md-1 pull-md-2 offset-md-0 col-xs-2 offset-xs-2">
+        <div class="col-md-1 pull-md-2 offset-md-0 col-2 offset-2">
             <form>
                 <input name="id" value="{{ wine.id }}" type="hidden">
                 <input name="quantity" class="form-control cart-quantity" type="number" onkeypress="return event.charCode >= 48 && event.charCode <= 57" value="{{ wine.quantity }}" autocomplete="off">
             </form>
         </div>
-        <div class="pull-md-2 col-xs-1 text-xs-center">&times;</div>
-        <div class="pull-md-2 col-md-1 col-xs-3 text-xs-right">${{ wine.price }}</div>
-        <div class="pull-md-2 col-xs-1 text-xs-center">=</div>
-        <div class="pull-md-2 col-md-1 col-xs-3 text-xs-right">${{ wine.total_price }}</div>
+        <div class="pull-md-2 col-1 text-center">&times;</div>
+        <div class="pull-md-2 col-md-1 col-3 text-right">${{ wine.price }}</div>
+        <div class="pull-md-2 col-1 text-center">=</div>
+        <div class="pull-md-2 col-md-1 col-3 text-right">${{ wine.total_price }}</div>
     </div>
-    {% endfor %}
-    {% for key, value in totals %}
+{% endfor %}
+{% for key, value in totals %}
     <div class="row">
-        <div class="col-xs-8 text-xs-right">{{ key }}</div>
-        <div class="col-xs-1 text-xs-center">=</div>
-        <div class="col-md-1 col-xs-3 text-xs-right">${{ value|floatformat:2 }}</div>
+        <div class="col-8 text-right">{{ key }}</div>
+        <div class="col-1 text-center">=</div>
+        <div class="col-md-1 col-3 text-right">${{ value }}</div>
     </div>
-    {% endfor %}
+{% endfor %}
 </div>
 {% endif %}

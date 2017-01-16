@@ -4,31 +4,6 @@ $price-color: rgb(6,142,6);
 $primary-color: rgb(142,6,6);
 $primary-color-light: rgba(142,6,6,0.2);
 
-@font-face {
-    font-family: 'Roboto';
-    font-weight: 100;
-    font-style: normal;
-    src: local('Roboto Thin'),
-        local('Roboto-Thin'),
-        url('Roboto-Thin.ttf') format('truetype');
-}
-@font-face {
-    font-family: 'Roboto';
-    font-weight: 300;
-    font-style: normal;
-    src: local('Roboto Light'),
-        local('Roboto-Light'),
-        url('Roboto-Light.ttf') format('truetype');
-}
-@font-face {
-    font-family: 'Roboto';
-    font-weight: 400;
-    font-style: normal;
-    src: local('Roboto Regular'),
-        local('Roboto-Regular'),
-        url('Roboto-Regular.ttf') format('truetype');
-}
-
 /* SITE WIDE */
 html {
     position: relative;
@@ -47,6 +22,7 @@ input[type=number]::-webkit-outer-spin-button {
 input.form-control, select.form-control, textarea.form-control {
     border: 1px solid $primary-color-light;
     border-radius: 0;
+    font: inherit;
     @include transition(0.2s);
     &:hover, &:focus {
         border: 1px solid $primary-color;
@@ -66,6 +42,8 @@ a.black-link, a.black-link:hover {
     border: 1px solid $primary-color;
     border-radius: 0;
     color: black;
+    cursor: pointer;
+    font-family: inherit;
     font-weight: 300;
     outline: none;
     @include transition(0.2s);
@@ -82,6 +60,7 @@ a.black-link, a.black-link:hover {
 }
 .list-group-item {
     border-color: $primary-color;
+    display: block;
     &:first-child, &:last-child {
         border-radius: 0;
     }
@@ -311,9 +290,15 @@ div.add {
     top: 50%;
     @include transform(translate(-50%, -50%)
                        rotate(-21deg));
-    ~ div {
+    ~ div, ~ form {
         opacity: 0.2;
     }
+}
+.sold-out-blocker {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
 }
 
 /* ALL-WINES */
@@ -442,7 +427,7 @@ a.list-wine {
     padding: $space-around;
     position: relative;
     @include transition(0.2s);
-    &:hover {
+    &:focus, &:hover {
         @include transform(scale(1.05, 1.05));
         z-index: 1;
     }
@@ -472,6 +457,7 @@ a.list-wine {
             bottom: 5px;
             color: $price-color;
             font-size: 20px;
+            line-height: 20px;
             position: absolute;
             right: $space-around;
         }
@@ -505,6 +491,10 @@ a.list-wine {
             > div:not(.remove) {
                 padding-right: 5px;
             }
+            input.cart-quantity {
+                height: 51px;
+                margin-bottom: -1px;
+            }
         }
     }
     .row.wine {
@@ -525,6 +515,12 @@ a.list-wine {
             }
             > div.remove {
                 padding-left: 5px;
+                @media (max-width: 575px) {
+                    button {
+                        padding: 0;
+                        width: 100%;
+                    }
+                }
             }
         }
     }
@@ -552,10 +548,31 @@ form#order {
         color: red;
     }
 }
-#thanks-modal div.modal-content {
-    padding: 15px;
-    text-align: center;
-    div {
-        padding: 15px 0;
+#thanks-modal .modal-dialog {
+    margin: 0 auto;
+    top: 50%;
+    @include transform(translateY(-50%));
+    div.modal-content {
+        padding: 15px;
+        text-align: center;
+        div {
+            padding: 15px 0;
+        }
+    }
+}
+#loading-modal img {
+    @include animation(spin 2s infinite linear);
+    display: block;
+    height: 100px;
+    margin: -50px auto 0 auto;
+    position: relative;
+    top: 50%;
+}
+@include keyframes(spin) {
+    from {
+        @include transform(rotate(0deg));
+    }
+    to {
+        @include transform(rotate(360deg));
     }
 }

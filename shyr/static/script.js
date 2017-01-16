@@ -18,7 +18,7 @@ $(document).ready(function () {
         }
     });
 
-    /* Adds a wine to the cart from the VIEW page. */
+    /* Add a wine to the cart from the VIEW page. */
     $('#nav-cart').popover({
         trigger: 'manual',
         content: ' '
@@ -58,6 +58,7 @@ $(document).ready(function () {
         });
     });
 
+    /* Validate the order form and submit the order. */
     $('form#order').validate({
         errorPlacement: function(error, element) {
             $(element).attr('placeholder', 'Required');
@@ -77,36 +78,31 @@ $(document).ready(function () {
             }
         },
         submitHandler: function(form) {
-            $.get('/checkout/', $(form).serialize(), function(msg) {
-                if (msg) {
-                    alert(msg);
-                } else {
-                    $('#thanks-modal').modal({
+            $.ajax({
+                type: 'GET',
+                url: '/checkout/',
+                data: $(form).serialize(),
+                beforeSend: function() {
+                    $('#loading-modal').modal({
                         backdrop: 'static',
                         keyboard: false
                     });
+                },
+                complete: function() {
+                    $('#loading-modal').modal('hide');
+                },
+                success: function(msg) {
+                    if (msg) {
+                        alert(msg);
+                    } else {
+                        $('#thanks-modal').modal({
+                            backdrop: 'static',
+                            keyboard: false
+                        });
+                    }
                 }
             });
         }
     });
-    /* Validate order form upon "Submit Order" button click. */
-    // $('form#order').submit(function(e) {
-    //     e.preventDefault();
-    //     $.ajax({
-    //         url: '/checkout/',
-    //         type: "GET",
-    //         data: $(this).serialize(),
-    //         success: function(msg) {
-    //             if (msg) {
-    //                 alert(msg);
-    //             } else {
-    //                 $('#thanks-modal').modal({
-    //                     backdrop: 'static',
-    //                     keyboard: false
-    //                 });
-    //             }
-    //         }
-    //     });
-    // });
 
 });

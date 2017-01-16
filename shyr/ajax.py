@@ -1,4 +1,5 @@
 import json
+from decimal import Decimal
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.contrib.staticfiles import finders
@@ -66,9 +67,9 @@ def getCartContext(request):
             subtotal += float(wine.total_price)
         context['cart'] = wines
         context['totals'] = [
-            ('Subtotal', subtotal),
-            ('Estimated Tax', subtotal * 0.0875),
-            ('Total', subtotal * 1.0875)
+            ('Subtotal', round(Decimal(str(subtotal)), 2)),
+            ('Estimated Tax', round(Decimal(str(subtotal * 0.0875)), 2)),
+            ('Total', round(Decimal(str(subtotal * 1.0875)), 2))
         ]
     else:
         context['cart'] = None
@@ -219,6 +220,9 @@ def checkout(request):
 
         msg_text = render_to_string('email.txt', context)
         msg_html = render_to_string('email.html', context)
+
+        import time
+        time.sleep(2)
 
         sent = send_mail(
             subject='Order Inquiry from ' + request.GET['name'],

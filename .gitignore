@@ -3,4 +3,8 @@ db.sqlite3
 shyrwines/settings_local.py
 shyr/static/factsheets/*.pdf
 shyr/static/images/wines/*.jpg
-
+*.min.js
+*.min.css
+*.ttf
+*.css
+*.css.map
