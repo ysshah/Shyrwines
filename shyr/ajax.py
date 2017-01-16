@@ -221,9 +221,6 @@ def checkout(request):
         msg_text = render_to_string('email.txt', context)
         msg_html = render_to_string('email.html', context)
 
-        import time
-        time.sleep(2)
-
         sent = send_mail(
             subject='Order Inquiry from ' + request.GET['name'],
             message=msg_text,
@@ -232,7 +229,7 @@ def checkout(request):
             html_message=msg_html
         )
         if sent:
-            # request.session.pop('cart')
+            request.session.pop('cart')
             return HttpResponse('0', content_type='application/json')
         else:
             return HttpResponse('Error sending email.',

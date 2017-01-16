@@ -83,13 +83,13 @@ $(document).ready(function () {
                 url: '/checkout/',
                 data: $(form).serialize(),
                 beforeSend: function() {
-                    $('#loading-modal').modal({
-                        backdrop: 'static',
-                        keyboard: false
-                    });
+                    // $('#loading-modal').modal({
+                    //     backdrop: 'static',
+                    //     keyboard: false
+                    // });
                 },
                 complete: function() {
-                    $('#loading-modal').modal('hide');
+                    // $('#loading-modal').modal('hide');
                 },
                 success: function(msg) {
                     if (msg) {

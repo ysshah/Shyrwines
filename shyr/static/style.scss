@@ -52,7 +52,7 @@ a.black-link, a.black-link:hover {
         color: white;
     }
     &:focus {
-        outline: 0;
+        box-shadow: none;
     }
 }
 .color {
@@ -428,6 +428,7 @@ a.list-wine {
     position: relative;
     @include transition(0.2s);
     &:focus, &:hover {
+        text-decoration: none;
         @include transform(scale(1.05, 1.05));
         z-index: 1;
     }
