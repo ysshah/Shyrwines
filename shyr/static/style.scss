@@ -398,6 +398,8 @@ span.results {
 }
 span.pages {
     line-height: 50px;
+    position: absolute;
+    right: 0;
     a.btn {
         height: 27px;
         line-height: 25px;
