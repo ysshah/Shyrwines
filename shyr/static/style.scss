@@ -3,6 +3,7 @@
 $price-color: rgb(6,142,6);
 $primary-color: rgb(142,6,6);
 $primary-color-light: rgba(142,6,6,0.2);
+$primary-color-extra-light: rgba(142,6,6,0.1);
 
 /* SITE WIDE */
 html {
@@ -578,4 +579,10 @@ form#order {
     to {
         @include transform(rotate(360deg));
     }
+}
+.alert-info {
+    background-color: $primary-color-extra-light;
+    border-color: $primary-color;
+    border-radius: 0;
+    color: $primary-color;
 }
