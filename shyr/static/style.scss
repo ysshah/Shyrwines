@@ -337,9 +337,12 @@ a.key-collapse {
     color: black;
     @include display(flex);
     @include justify-content(space-between);
-    &:focus, &:hover {
+    text-decoration: none;
+    &:hover, &:not(.collapsed) {
         color: $primary-color;
-        text-decoration: none;
+        div.collapse-notch {
+            border-color: $primary-color;
+        }
     }
     div.collapse-notch {
         border-bottom: 2px solid black;
@@ -354,11 +357,8 @@ a.key-collapse {
     &.collapsed div.collapse-notch {
         @include transform(rotate(45deg));
     }
-    &:hover, &.collapsed:hover, &:not(.collapsed) {
-        div.collapse-notch {
-            border-color: $primary-color;
-            @include transform(rotate(-45deg));
-        }
+    &:not(.collapsed) div.collapse-notch {
+        @include transform(rotate(-45deg));
     }
 }
 div.pages-row {
