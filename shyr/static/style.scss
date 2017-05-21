@@ -335,8 +335,6 @@ a.close-cross {
 }
 a.key-collapse {
     color: black;
-    @include display(flex);
-    @include justify-content(space-between);
     text-decoration: none;
     &:hover, &:not(.collapsed) {
         color: $primary-color;
@@ -435,9 +433,7 @@ a.list-wine {
         z-index: 1;
     }
     .list-pic {
-        @include display(flex);
         height: 150px - 2 * $space-around;
-        @include justify-content(center);
         overflow: hidden;
         padding: 0;
         img {
@@ -502,10 +498,7 @@ a.list-wine {
     }
     .row.wine {
         > div.name {
-            @include display(flex);
-            @include flex-direction(column);
             height: 50px;
-            @include justify-content(center);
             a {
                 line-height: 20px;
             }
@@ -530,9 +523,6 @@ a.list-wine {
 }
 form#order {
     .form-check {
-        @include display(flex);
-        @include flex-direction(column);
-        @include justify-content(center);
         @media (min-width: 768px) {
             height: 50px;
         }

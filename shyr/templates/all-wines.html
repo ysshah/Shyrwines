@@ -21,7 +21,7 @@
             <h4 class="key empty">{{ key|title }}</h4>
         {% else %}
             <h4 class="key">
-                <a class="key-collapse collapsed" data-toggle="collapse" href="#{{ key }}-collapse">
+                <a class="key-collapse collapsed d-flex justify-content-between" data-toggle="collapse" href="#{{ key }}-collapse">
                     <div>{{ key|title }}</div>
                     <div class="collapse-notch"></div>
                 </a>
@@ -53,7 +53,7 @@
                                 <div class="sold-out">Sold Out</div>
                             {% endif %}
 
-                                <div class="col-2 list-pic">
+                                <div class="col-2 list-pic d-flex justify-content-center">
                                 {% if wine.image_exists %}
                                     <img src="{% static 'images/wines/' %}{{ wine.sku }}.jpg" alt="{% static 'images/bottle.svg' %}" />
                                 {% else %}

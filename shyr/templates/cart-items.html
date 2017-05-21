@@ -2,7 +2,7 @@
 <div class="container cart">
 {% for wine in cart %}
     <div class="row wine">
-        <div class="col-md-5 col-9 name">
+        <div class="col-md-5 col-9 name d-flex flex-column justify-content-center">
             <a class="black-link" href="{% url 'view' wine.id %}">{{ wine.name }}</a>
         </div>
         <div class="col-md-2 push-md-5 col-3 text-right remove">
