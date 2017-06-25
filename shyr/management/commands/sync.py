@@ -26,9 +26,8 @@ class Command(BaseCommand):
         df = pd.read_excel(os.path.expanduser(options['excelFile']))
         if df[required].isnull().any().any():
             for i in df.index[df[required].isnull().any(axis=1)]:
-                print('{}Error: Row {} is missing {}{}'.format(RED, i,
-                    required[np.where(df.loc[i][required].isnull())[0]],
-                    RESET_ALL))
+                print('{}Error: Row {} "{}" is missing {}{}'.format(RED, i+2, df.at[i,'Name'],
+                    required[np.where(df.loc[i][required].isnull())[0]], RESET_ALL))
             sys.exit(0)
 
         # Fill empty counts with 1
