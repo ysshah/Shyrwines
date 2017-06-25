@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
         # Read Shyr Wine List and check if missing required columns
         df = pd.read_excel(os.path.expanduser(options['excelFile']))
-        if df[required].isnull().any().any():
+        if df[df['No-Adv'] != 'N'][required].isnull().any().any():
             for i in df.index[df[required].isnull().any(axis=1)]:
                 print('{}Error: Row {} "{}" is missing {}{}'.format(RED, i+2, df.at[i,'Name'],
                     required[np.where(df.loc[i][required].isnull())[0]], RESET_ALL))
