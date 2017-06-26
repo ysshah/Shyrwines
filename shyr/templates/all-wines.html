@@ -55,7 +55,7 @@
 
                                 <div class="col-2 list-pic d-flex justify-content-center">
                                 {% if wine.image_exists %}
-                                    <img src="{% static 'images/wines/' %}{{ wine.sku }}.jpg" alt="{% static 'images/bottle.svg' %}" />
+                                    <img src="{% static 'images/wines-resized/' %}{{ wine.sku }}-small.jpg" srcset="{% static 'images/wines-resized/' %}{{ wine.sku }}-medium.jpg 2x" alt="{% static 'images/bottle.svg' %}" />
                                 {% else %}
                                     <img src="{% static 'images/bottle.svg' %}" alt="{{ wine.name }}" />
                                 {% endif %}

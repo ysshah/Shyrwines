@@ -4,6 +4,7 @@ db.sqlite3
 shyrwines/settings_local.py
 shyr/static/factsheets/*.pdf
 shyr/static/images/wines/*.jpg
+shyr/static/images/wines-resized/*.jpg
 *.min.js
 *.min.css
 *.ttf
