@@ -7,22 +7,22 @@
     <div class="row">
         <div class="col-lg-3 col-md-4">
 
-        {% for key, value in selected %}
-            <h4 class="key">{{ key|title }}</h4>
+        {% for key, keyTitle, value in selected %}
+            <h4 class="key">{{ keyTitle }}</h4>
             <a class="close-cross" href="?{% url_remove request key %}"></a>
             <span class="value">{{ value }}</span>
         {% endfor %}
 
-        {% for key, options in choices %}
+        {% for key, keyTitle, options in choices %}
         {% if options|length_is:"1" %}
-            <h4 class="key">{{ key|title }}</h4>
+            <h4 class="key">{{ keyTitle }}</h4>
             <a class="black-link value" href="?{{ key }}={{ options.0 }}">{{ options.0 }}</a>
         {% elif options|length_is:"0" %}
-            <h4 class="key empty">{{ key|title }}</h4>
+            <h4 class="key empty">{{ keyTitle }}</h4>
         {% else %}
             <h4 class="key">
                 <a class="key-collapse collapsed d-flex justify-content-between" data-toggle="collapse" href="#{{ key }}-collapse">
-                    <div>{{ key|title }}</div>
+                    <div>{{ keyTitle }}</div>
                     <div class="collapse-notch"></div>
                 </a>
             </h4>

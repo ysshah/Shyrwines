@@ -1,11 +1,13 @@
-import json
+from collections import OrderedDict
 from decimal import Decimal
+
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.contrib.staticfiles import finders
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+
 from .models import Wine
 
 raters = (
@@ -22,12 +24,13 @@ raters = (
     ('WW', 'Wilfred Wong')
 )
 
-filter_fields = (
-    'country',
-    'region',
-    'appellation',
-    'varietal'
-)
+filter_fields = OrderedDict([
+    ('country', 'Country'),
+    ('region', 'Region'),
+    ('appellation', 'Appellation'),
+    ('varietal', 'Varietal'),
+    ('wine_type', 'Type')
+])
 
 sort_options = (
     'Alphabetical: A to Z',
@@ -81,10 +84,10 @@ def getAllWinesContext(request):
     filter_args = {}
     selected = []
     not_selected = []
-    for field in filter_fields:
+    for field in filter_fields.keys():
         if field in request.GET:
             filter_args[field] = request.GET[field]
-            selected.append((field, request.GET[field]))
+            selected.append((field, filter_fields[field], request.GET[field]))
         else:
             not_selected.append(field)
 
@@ -106,7 +109,7 @@ def getAllWinesContext(request):
             filter_args['price__gte'] = low
         if high:
             filter_args['price__lte'] = high
-        selected.append(('price', request.GET['price']))
+        selected.append(('price', 'Price', request.GET['price']))
 
     wines = Wine.objects.filter(**filter_args)
 
@@ -114,9 +117,9 @@ def getAllWinesContext(request):
     for field in not_selected:
         field_choices = wines.order_by(field).values_list(
             field, flat=True).distinct().exclude(**{field: None})
-        choices.append((field, field_choices))
-    choices.append(('price', price_options))
-    choices.append(('sort', sort_options))
+        choices.append((field, filter_fields[field], field_choices))
+    choices.append(('price', 'Price', price_options))
+    choices.append(('sort', 'Sort', sort_options))
 
     # Sorting results
     if 'sort' in request.GET:
@@ -186,7 +189,7 @@ def autocomplete(request):
             wine.after = wine.name[i + len(query):]
 
         matched_fields = []
-        for field in filter_fields:
+        for field in filter_fields.keys():
             for match in Wine.objects.values(field).distinct().filter(
                 **{field+'__contains':query})[:1]:
                 i = match[field].lower().index(query)
