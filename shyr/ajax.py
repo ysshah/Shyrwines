@@ -138,7 +138,7 @@ def getAllWinesContext(request):
             wines = wines.order_by('price')
         elif request.GET['sort'] == sort_options[5]:
             wines = wines.order_by('-price')
-        selected.append(('sort', request.GET['sort']))
+        selected.append(('sort', 'Sort', request.GET['sort']))
     else:
         wines = sorted(wines,
             key=lambda w: w.name[5:].lower() if w.vintage else w.name.lower())
