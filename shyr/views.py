@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
 from django.contrib.staticfiles import finders
-from .ajax import getCartContext, getAllWinesContext
+from django.shortcuts import render, get_object_or_404
+
+from .ajax import get_cart_context, get_all_wines_context
 from .models import Wine
+
 
 raters = (
     ('JH', 'James Halliday'),
@@ -18,6 +19,7 @@ raters = (
     ('WW', 'Wilfred Wong')
 )
 
+
 def _get_ratings(this_wine):
     ratings = []
     for rater_abbr, rater_full in raters:
@@ -31,7 +33,7 @@ def about(request):
 
 
 def all_wines(request):
-    return render(request, 'all-wines.html', getAllWinesContext(request))
+    return render(request, 'all-wines.html', get_all_wines_context(request))
 
 
 def index(request):
@@ -58,22 +60,19 @@ def index(request):
 
 
 def cart(request):
-    return render(request, 'cart.html', getCartContext(request))
+    return render(request, 'cart.html', get_cart_context(request))
 
 
 def contact_us(request):
-    return render(request, 'contact-us.html',
-        {'page_title': 'Contact Us | '})
+    return render(request, 'contact-us.html', {'page_title': 'Contact Us | '})
 
 
 def privacy_policy(request):
-    return render(request, 'privacy-policy.html',
-        {'page_title': 'Privacy Policy | '})
+    return render(request, 'privacy-policy.html', {'page_title': 'Privacy Policy | '})
 
 
 def terms_of_service(request):
-    return render(request, 'terms-of-service.html',
-        {'page_title': 'Terms of Service | '})
+    return render(request, 'terms-of-service.html', {'page_title': 'Terms of Service | '})
 
 
 def view(request, wine_id):

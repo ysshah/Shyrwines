@@ -1,11 +1,11 @@
 from collections import OrderedDict
 from decimal import Decimal
 
-from django.shortcuts import render
-from django.http import HttpResponse, Http404
 from django.contrib.staticfiles import finders
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse, Http404
+from django.shortcuts import render
 from django.template.loader import render_to_string
 
 from .models import Wine
@@ -59,7 +59,7 @@ def _attach_ratings(wines):
         wine.image_exists = finders.find('images/wines/{}.jpg'.format(wine.sku))
 
 
-def getCartContext(request):
+def get_cart_context(request):
     context = {'page_title': 'Cart | '}
     if 'cart' in request.session:
         subtotal = 0.0
@@ -80,7 +80,7 @@ def getCartContext(request):
     return context
 
 
-def getAllWinesContext(request):
+def get_all_wines_context(request):
     filter_args = {}
     selected = []
     not_selected = []
@@ -115,8 +115,7 @@ def getAllWinesContext(request):
 
     choices = []
     for field in not_selected:
-        field_choices = wines.order_by(field).values_list(
-            field, flat=True).distinct().exclude(**{field: None})
+        field_choices = wines.order_by(field).values_list(field, flat=True).distinct().exclude(**{field: None})
         choices.append((field, filter_fields[field], field_choices))
     choices.append(('price', 'Price', price_options))
     choices.append(('sort', 'Sort', sort_options))
@@ -124,12 +123,9 @@ def getAllWinesContext(request):
     # Sorting results
     if 'sort' in request.GET:
         if request.GET['sort'] == sort_options[0]:
-            wines = sorted(wines,
-                key=lambda w: w.name[5:].lower() if w.vintage else w.name.lower())
+            wines = sorted(wines, key=lambda w: w.name[5:].lower() if w.vintage else w.name.lower())
         elif request.GET['sort'] == sort_options[1]:
-            wines = sorted(wines,
-                key=lambda w: w.name[5:].lower() if w.vintage else w.name.lower(),
-                reverse=True)
+            wines = sorted(wines, key=lambda w: w.name[5:].lower() if w.vintage else w.name.lower(), reverse=True)
         elif request.GET['sort'] == sort_options[2]:
             wines = wines.order_by('vintage')
         elif request.GET['sort'] == sort_options[3]:
@@ -140,8 +136,7 @@ def getAllWinesContext(request):
             wines = wines.order_by('-price')
         selected.append(('sort', 'Sort', request.GET['sort']))
     else:
-        wines = sorted(wines,
-            key=lambda w: w.name[5:].lower() if w.vintage else w.name.lower())
+        wines = sorted(wines, key=lambda w: w.name[5:].lower() if w.vintage else w.name.lower())
 
     _attach_ratings(wines)
 
@@ -190,8 +185,7 @@ def autocomplete(request):
 
         matched_fields = []
         for field in filter_fields.keys():
-            for match in Wine.objects.values(field).distinct().filter(
-                **{field+'__contains':query})[:1]:
+            for match in Wine.objects.values(field).distinct().filter(**{field+'__contains': query})[:1]:
                 i = match[field].lower().index(query)
                 match['fieldname'] = match[field]
                 match['before'] = match[field][:i]
@@ -211,7 +205,7 @@ def autocomplete(request):
 
 def checkout(request):
     if request.is_ajax() and request.GET:
-        context = getCartContext(request)
+        context = get_cart_context(request)
         context['name'] = request.GET['name']
         context['email'] = request.GET['email']
         context['phone'] = request.GET['phone']
@@ -235,8 +229,7 @@ def checkout(request):
             request.session.pop('cart')
             return HttpResponse('0', content_type='application/json')
         else:
-            return HttpResponse('Error sending email.',
-                content_type='application/json')
+            return HttpResponse('Error sending email.', content_type='application/json')
     else:
         raise Http404
 
@@ -249,7 +242,7 @@ def update(request):
         else:
             request.session['cart'].pop(request.GET['id'])
         request.session.modified = True
-        return render(request, 'cart-items.html', getCartContext(request))
+        return render(request, 'cart-items.html', get_cart_context(request))
     else:
         raise Http404
 
@@ -258,6 +251,6 @@ def remove(request):
     if request.is_ajax() and request.GET:
         request.session['cart'].pop(request.GET['id'])
         request.session.modified = True
-        return render(request, 'cart-items.html', getCartContext(request))
+        return render(request, 'cart-items.html', get_cart_context(request))
     else:
         raise Http404
